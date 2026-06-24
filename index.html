@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WeLearn — 重新定义学习方式</title>
+
+<!-- ===== Tailwind CSS ===== -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          brand: { 50:'#eef2ff', 100:'#e0e7ff', 500:'#6366f1', 600:'#4f46e5', 700:'#4338ca', 900:'#1e1b4b' }
+        },
+        fontFamily: {
+          sans: ['"Inter"', '"Noto Sans SC"', '"PingFang SC"', '"Microsoft YaHei"', 'system-ui', '-apple-system', 'sans-serif'],
+          display: ['"Space Grotesk"', '"Noto Sans SC"', '"PingFang SC"', 'system-ui', 'sans-serif']
+        }
+      }
+    }
+  }
+</script>
+
+<!-- 字体：Google Fonts 原版 + 国内镜像兜底 -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<!-- 国内镜像（fonts.googleapis.com 被墙时手动切换下面这行） -->
+<!-- <link href="https://fonts.font.im/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet"> -->
+
+<!-- ===== GSAP + ScrollTrigger ===== -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/ScrollTrigger.min.js"></script>
+
+<!-- ===== Lenis ===== -->
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+
+<!-- ===== Swiper ===== -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<!-- ===== Particles.js ===== -->
+<script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+
+<!-- ===== Lottie ===== -->
+<script src="https://cdn.jsdelivr.net/npm/lottie-web@5.12.2/build/player/lottie.min.js"></script>
+
+<!-- ===== Three.js ===== -->
+<script type="importmap">
+{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js" } }
+</script>
+
+<style>
+  html.lenis, html.lenis body { height: auto; }
+  .lenis.lenis-smooth { scroll-behavior: auto; }
+  .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+  .lenis.lenis-stopped { overflow: hidden; }
+  .lenis.lenis-scrolling iframe { pointer-events: none; }
+
+  #particles-js { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+  #three-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; opacity: 0.3; pointer-events: none; }
+
+  .swiper { width: 100%; padding: 20px 0 60px; }
+  .swiper-slide {
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 24px; padding: 0; backdrop-filter: blur(20px);
+    height: auto; overflow: hidden;
+    transition: transform 0.4s ease, border-color 0.4s ease;
+  }
+  .swiper-slide:hover { border-color: rgba(99,102,241,0.5); transform: translateY(-8px); }
+  .swiper-pagination-bullet { background: rgba(255,255,255,0.3); }
+  .swiper-pagination-bullet-active { background: #6366f1; }
+
+  .card-3d {
+    transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    transform-style: preserve-3d; perspective: 1000px;
+  }
+  .card-3d:hover {
+    transform: rotateY(-8deg) rotateX(4deg) scale(1.03);
+    box-shadow: 0 30px 60px -12px rgba(99,102,241,0.3);
+  }
+
+  .text-gradient {
+    background: linear-gradient(135deg, #818cf8 0%, #c084fc 50%, #f472b6 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* 图片占位色块 */
+  .img-placeholder {
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Space Grotesk', monospace; font-weight: 600;
+    letter-spacing: 0.05em;
+    border: 2px dashed rgba(255,255,255,0.15);
+    position: relative; overflow: hidden;
+  }
+  .img-placeholder::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(
+      45deg, transparent, transparent 8px, rgba(255,255,255,0.02) 8px, rgba(255,255,255,0.02) 10px
+    );
+  }
+  .img-placeholder .img-id {
+    position: relative; z-index: 1;
+    background: rgba(0,0,0,0.6); padding: 6px 16px; border-radius: 8px;
+    font-size: 14px; color: rgba(255,255,255,0.8);
+  }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: #0a0a1a; }
+  ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+</style>
+</head>
+<body class="bg-[#0a0a1a] text-white font-sans overflow-x-hidden">
+
+<!-- ================================================================ -->
+<!-- SECTION 1: HERO — Particles.js 背景 + 图片占位                       -->
+<!-- ================================================================ -->
+<section class="relative min-h-screen flex items-center justify-center overflow-hidden">
+  <div id="particles-js"></div>
+
+  <div class="relative z-10 text-center px-6 max-w-5xl mx-auto">
+    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur mb-8 opacity-0" id="hero-badge">
+      <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+      <span class="text-sm text-white/60">WeLearn v2.0 — 已服务 10,000+ 学习者</span>
+    </div>
+
+    <h1 class="text-6xl md:text-8xl font-display font-bold leading-[1.05] mb-6 opacity-0" id="hero-title">
+      <span class="text-gradient">重新定义</span><br>学习方式
+    </h1>
+
+    <p class="text-xl md:text-2xl text-white/40 max-w-2xl mx-auto mb-10 opacity-0" id="hero-subtitle">
+      从课堂笔记到考试复习，一站式智能学习平台。用 AI 驱动的高效工具，让每一分钟学习都有回报。
+    </p>
+
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-4 opacity-0" id="hero-cta">
+      <button class="px-8 py-4 bg-brand-500 hover:bg-brand-600 rounded-2xl font-semibold text-lg transition-all hover:scale-105 hover:shadow-2xl hover:shadow-brand-500/30">免费开始使用 →</button>
+      <button class="px-8 py-4 bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl font-semibold text-lg transition-all backdrop-blur">观看演示</button>
+    </div>
+  </div>
+
+  <!-- 右下角图片占位 -->
+  <div class="absolute bottom-20 right-10 z-0 hidden md:block opacity-0" id="hero-img">
+    <div class="img-placeholder w-80 h-60 rounded-2xl" style="background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4338ca 100%);">
+      <span class="img-id">IMG-HERO · #4338CA</span>
+    </div>
+  </div>
+
+  <div class="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 opacity-0" id="scroll-hint">
+    <div class="w-6 h-10 rounded-full border-2 border-white/20 flex items-start justify-center p-1.5">
+      <div class="w-1.5 h-3 rounded-full bg-white/40 animate-bounce"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================ -->
+<!-- SECTION 2: 展示横幅 + 大图占位                                      -->
+<!-- ================================================================ -->
+<section class="relative py-20 px-6 bg-[#060612]">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-12">
+      <span class="text-sm font-semibold text-brand-500 tracking-widest uppercase opacity-0 show-label">产品展示</span>
+      <h2 class="text-4xl md:text-6xl font-display font-bold mt-4 opacity-0 show-title">
+        看一眼，<span class="text-gradient">就懂</span>
+      </h2>
+    </div>
+    <!-- 横幅大图占位 -->
+    <div class="img-placeholder w-full h-80 md:h-96 rounded-3xl opacity-0 show-img"
+         style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);">
+      <span class="img-id">IMG-BANNER · #1E293B</span>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================ -->
+<!-- SECTION 3: Three.js 3D 展示                                        -->
+<!-- ================================================================ -->
+<section class="relative min-h-[80vh] flex items-center justify-center bg-[#0a0a1a] overflow-hidden">
+  <canvas id="three-canvas"></canvas>
+  <div class="relative z-10 text-center px-6">
+    <span class="text-sm font-semibold text-brand-500 tracking-widest uppercase opacity-0" id="t3-label">Powered by AI</span>
+    <h2 class="text-5xl md:text-7xl font-display font-bold mt-4 mb-6 opacity-0" id="t3-title">
+      智能，<span class="text-gradient">无处不在</span>
+    </h2>
+    <p class="text-xl text-white/30 max-w-xl mx-auto opacity-0" id="t3-desc">
+      每一个学习动作都被 AI 理解，转化为个性化的学习路径和精准反馈。
+    </p>
+  </div>
+</section>
+
+<!-- ================================================================ -->
+<!-- SECTION 4: 功能卡片 + 图片占位                                      -->
+<!-- ================================================================ -->
+<section class="relative py-32 px-6 bg-[#060612]">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-20">
+      <span class="text-sm font-semibold text-brand-500 tracking-widest uppercase opacity-0 func-label">核心功能</span>
+      <h2 class="text-4xl md:text-6xl font-display font-bold mt-4 opacity-0 func-title">一切你需要的，都在这里</h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <!-- Card 1 -->
+      <div class="card-3d bg-white/[0.02] border border-white/[0.06] rounded-3xl backdrop-blur cursor-pointer opacity-0 func-card overflow-hidden">
+        <div class="img-placeholder w-full h-48" style="background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);">
+          <span class="img-id">IMG-CARD-1 · #312E81</span>
+        </div>
+        <div class="p-8">
+          <h3 class="text-xl font-display font-bold mb-3">AI 笔记助手</h3>
+          <p class="text-white/40 leading-relaxed">自动从课件提取关键知识点，生成结构化笔记。支持手写、语音、拍照三种输入方式。</p>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="card-3d bg-white/[0.02] border border-white/[0.06] rounded-3xl backdrop-blur cursor-pointer opacity-0 func-card overflow-hidden">
+        <div class="img-placeholder w-full h-48" style="background: linear-gradient(135deg, #4c1d95 0%, #7c3aed 100%);">
+          <span class="img-id">IMG-CARD-2 · #7C3AED</span>
+        </div>
+        <div class="p-8">
+          <h3 class="text-xl font-display font-bold mb-3">智能刷题系统</h3>
+          <p class="text-white/40 leading-relaxed">基于错题数据生成个性化练习题。自适应难度，精准定位知识薄弱点。</p>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="card-3d bg-white/[0.02] border border-white/[0.06] rounded-3xl backdrop-blur cursor-pointer opacity-0 func-card overflow-hidden">
+        <div class="img-placeholder w-full h-48" style="background: linear-gradient(135deg, #831843 0%, #db2777 100%);">
+          <span class="img-id">IMG-CARD-3 · #DB2777</span>
+        </div>
+        <div class="p-8">
+          <h3 class="text-xl font-display font-bold mb-3">学习数据分析</h3>
+          <p class="text-white/40 leading-relaxed">可视化你的学习轨迹。用时统计、知识图谱、考试预测，用数据驱动进步。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================ -->
+<!-- SECTION 5: Swiper 轮播 + 图片占位                                  -->
+<!-- ================================================================ -->
+<section class="relative py-32 px-6 bg-[#0a0a1a] overflow-hidden">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-16">
+      <span class="text-sm font-semibold text-brand-500 tracking-widest uppercase opacity-0 swiper-label">用户故事</span>
+      <h2 class="text-4xl md:text-6xl font-display font-bold mt-4 opacity-0 swiper-title">被 10,000+ 学习者信任</h2>
+    </div>
+
+    <div class="swiper opacity-0" id="testimonial-swiper">
+      <div class="swiper-wrapper">
+        <!-- Slide 1 -->
+        <div class="swiper-slide">
+          <div class="img-placeholder w-full h-40" style="background: linear-gradient(135deg, #0f766e 0%, #14b8a6 100%);">
+            <span class="img-id">IMG-SWIPE-1 · #14B8A6</span>
+          </div>
+          <div class="p-8">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-10 h-10 rounded-full bg-gradient-to-br from-brand-500 to-purple-500 flex items-center justify-center font-bold">李</div>
+              <div><div class="font-semibold text-sm">李明哲</div><div class="text-xs text-white/40">湖南工大 · 机械 2408</div></div>
+            </div>
+            <p class="text-white/60 leading-relaxed text-sm">"WeLearn 的 AI 笔记功能完全改变了我的复习方式。"</p>
+          </div>
+        </div>
+        <!-- Slide 2 -->
+        <div class="swiper-slide">
+          <div class="img-placeholder w-full h-40" style="background: linear-gradient(135deg, #7c3aed 0%, #a78bfa 100%);">
+            <span class="img-id">IMG-SWIPE-2 · #A78BFA</span>
+          </div>
+          <div class="p-8">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center font-bold">王</div>
+              <div><div class="font-semibold text-sm">王晓萌</div><div class="text-xs text-white/40">湖南工大 · 电气 2301</div></div>
+            </div>
+            <p class="text-white/60 leading-relaxed text-sm">"智能刷题太强了，期末成绩从 68 提到了 89。"</p>
+          </div>
+        </div>
+        <!-- Slide 3 -->
+        <div class="swiper-slide">
+          <div class="img-placeholder w-full h-40" style="background: linear-gradient(135deg, #b45309 0%, #f59e0b 100%);">
+            <span class="img-id">IMG-SWIPE-3 · #F59E0B</span>
+          </div>
+          <div class="p-8">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-10 h-10 rounded-full bg-gradient-to-br from-green-500 to-teal-500 flex items-center justify-center font-bold">张</div>
+              <div><div class="font-semibold text-sm">张浩然</div><div class="text-xs text-white/40">考研党 · 二战上岸</div></div>
+            </div>
+            <p class="text-white/60 leading-relaxed text-sm">"学习数据分析帮我发现了薄弱模块，针对复习效率翻倍。"</p>
+          </div>
+        </div>
+        <!-- Slide 4 -->
+        <div class="swiper-slide">
+          <div class="img-placeholder w-full h-40" style="background: linear-gradient(135deg, #be123c 0%, #f43f5e 100%);">
+            <span class="img-id">IMG-SWIPE-4 · #F43F5E</span>
+          </div>
+          <div class="p-8">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-10 h-10 rounded-full bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center font-bold">赵</div>
+              <div><div class="font-semibold text-sm">赵雨涵</div><div class="text-xs text-white/40">大一新生 · 计算机</div></div>
+            </div>
+            <p class="text-white/60 leading-relaxed text-sm">"WeLearn 帮我快速适应了大学节奏，笔记自动整理是救命稻草。"</p>
+          </div>
+        </div>
+      </div>
+      <div class="swiper-pagination"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================ -->
+<!-- SECTION 6: 数据面板                                                 -->
+<!-- ================================================================ -->
+<section class="relative py-32 px-6 bg-[#060612]">
+  <div class="max-w-6xl mx-auto text-center">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-12">
+      <div>
+        <div class="text-6xl md:text-7xl font-display font-bold text-gradient opacity-0 stat-number" data-target="12">0</div>
+        <div class="text-white/30 mt-3 text-lg">万+ 活跃用户</div>
+      </div>
+      <div>
+        <div class="text-6xl md:text-7xl font-display font-bold text-gradient opacity-0 stat-number" data-target="98">0</div>
+        <div class="text-white/30 mt-3 text-lg">% 满意度</div>
+      </div>
+      <div>
+        <div class="text-6xl md:text-7xl font-display font-bold text-gradient opacity-0 stat-number" data-target="500">0</div>
+        <div class="text-white/30 mt-3 text-lg">万+ 笔记生成</div>
+      </div>
+      <div>
+        <div class="text-6xl md:text-7xl font-display font-bold text-gradient opacity-0 stat-number" data-target="24">0</div>
+        <div class="text-white/30 mt-3 text-lg">/7 在线答疑</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================ -->
+<!-- SECTION 7: CTA                                                     -->
+<!-- ================================================================ -->
+<section class="relative py-40 px-6 bg-[#0a0a1a] overflow-hidden">
+  <div class="absolute inset-0 bg-gradient-to-b from-brand-900/20 via-transparent to-transparent"></div>
+  <div class="relative z-10 max-w-3xl mx-auto text-center">
+    <h2 class="text-5xl md:text-7xl font-display font-bold mb-6 opacity-0 cta-title">
+      准备好<br><span class="text-gradient">改变学习方式</span>了吗？
+    </h2>
+    <p class="text-xl text-white/30 mb-10 opacity-0 cta-desc">
+      加入 10,000+ 学习者，体验 AI 驱动的下一代学习平台。
+    </p>
+    <!-- CTA 区域图片占位 -->
+    <div class="img-placeholder max-w-md mx-auto h-36 rounded-2xl mb-8 opacity-0 cta-img"
+         style="background: linear-gradient(135deg, #4f46e5 0%, #818cf8 50%, #c084fc 100%);">
+      <span class="img-id">IMG-CTA · #818CF8</span>
+    </div>
+    <button class="px-10 py-5 bg-gradient-to-r from-brand-500 to-purple-500 rounded-2xl font-bold text-xl hover:scale-105 transition-all hover:shadow-2xl hover:shadow-brand-500/40 opacity-0 cta-btn">
+      🚀 立即免费开始
+    </button>
+  </div>
+</section>
+
+<!-- ================================================================ -->
+<!-- SCRIPTS                                                            -->
+<!-- ================================================================ -->
+<script>
+// ============ 1. Lenis ============
+const lenis = new Lenis({
+  duration: 1.2,
+  easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+  smoothWheel: true,
+});
+function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+requestAnimationFrame(raf);
+lenis.on('scroll', ScrollTrigger.update);
+gsap.ticker.add((time) => lenis.raf(time * 1000));
+gsap.ticker.lagSmoothing(0);
+
+// ============ 2. Particles.js ============
+particlesJS('particles-js', {
+  particles: {
+    number: { value: 80, density: { enable: true, value_area: 800 } },
+    color: { value: '#6366f1' },
+    shape: { type: 'circle' },
+    opacity: { value: 0.5, random: true, anim: { enable: true, speed: 0.5, opacity_min: 0.1, sync: false } },
+    size: { value: 3, random: true, anim: { enable: true, speed: 2, size_min: 0.5, sync: false } },
+    line_linked: { enable: true, distance: 150, color: '#6366f1', opacity: 0.2, width: 1 },
+    move: { enable: true, speed: 1.5, direction: 'none', random: true, out_mode: 'out' }
+  },
+  interactivity: {
+    detect_on: 'canvas',
+    events: { onhover: { enable: true, mode: 'grab' }, onclick: { enable: true, mode: 'push' } },
+    modes: { grab: { distance: 180, line_linked: { opacity: 0.5 } }, push: { particles_nb: 4 } }
+  },
+  retina_detect: true
+});
+
+// ============ 3. Three.js ============
+import('three').then((THREE_MODULE) => {
+  const THREE = THREE_MODULE;
+  const canvas = document.getElementById('three-canvas');
+  const section = canvas.parentElement;
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+  camera.position.z = 10;
+
+  const knot = new THREE.Mesh(
+    new THREE.TorusKnotGeometry(1.2, 0.35, 200, 32),
+    new THREE.MeshBasicMaterial({ color: 0x6366f1, wireframe: true, transparent: true, opacity: 0.6 })
+  );
+  scene.add(knot);
+
+  const particlesGeo = new THREE.BufferGeometry();
+  const count = 1000;
+  const positions = new Float32Array(count * 3);
+  for (let i = 0; i < count; i++) {
+    const theta = Math.random() * Math.PI * 2;
+    const phi = Math.random() * Math.PI;
+    const r = 3.5 + Math.random() * 1.5;
+    positions[i*3]=r*Math.sin(phi)*Math.cos(theta);
+    positions[i*3+1]=r*Math.sin(phi)*Math.sin(theta);
+    positions[i*3+2]=r*Math.cos(phi);
+  }
+  particlesGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  const particles = new THREE.Points(particlesGeo, new THREE.PointsMaterial({
+    color: 0x818cf8, size: 0.03, transparent: true, opacity: 0.6,
+    blending: THREE.AdditiveBlending, depthWrite: false
+  }));
+  scene.add(particles);
+
+  function resize() {
+    const rect = section.getBoundingClientRect();
+    renderer.setSize(rect.width, rect.height);
+    camera.aspect = rect.width / rect.height;
+    camera.updateProjectionMatrix();
+  }
+  window.addEventListener('resize', resize); resize();
+
+  function animate3D(time) {
+    knot.rotation.x = time * 0.0003;
+    knot.rotation.y = time * 0.0005;
+    particles.rotation.x = time * 0.0001;
+    particles.rotation.y = time * 0.0002;
+    renderer.render(scene, camera);
+    requestAnimationFrame(animate3D);
+  }
+  requestAnimationFrame(animate3D);
+});
+
+// ============ 5. Swiper ============
+new Swiper('#testimonial-swiper', {
+  slidesPerView: 1, spaceBetween: 30, loop: true,
+  autoplay: { delay: 4000, disableOnInteraction: false },
+  pagination: { el: '.swiper-pagination', clickable: true },
+  breakpoints: { 768: { slidesPerView: 2, spaceBetween: 24 }, 1024: { slidesPerView: 3, spaceBetween: 30 } }
+});
+
+// ============ 6. GSAP 主编排 ============
+gsap.registerPlugin(ScrollTrigger);
+
+const heroTL = gsap.timeline({ defaults: { ease: 'power3.out' } });
+heroTL
+  .to('#hero-badge', { opacity: 1, y: 0, duration: 0.6 }, 0)
+  .from('#hero-title', { opacity: 0, y: 100, duration: 1.2 }, 0.1)
+  .from('#hero-subtitle', { opacity: 0, y: 40, duration: 0.8 }, 0.4)
+  .from('#hero-cta', { opacity: 0, y: 30, duration: 0.7 }, 0.7)
+  .to('#hero-img', { opacity: 1, y: 0, duration: 0.8 }, 0.9)
+  .to('#scroll-hint', { opacity: 1, duration: 0.6 }, 1.3);
+
+// Section 2: 展示横幅
+gsap.fromTo('.show-label', { opacity: 0, y: 30 },
+  { opacity: 1, y: 0, duration: 0.7, scrollTrigger: { trigger: '.show-label', start: 'top 85%' } });
+gsap.fromTo('.show-title', { opacity: 0, y: 40 },
+  { opacity: 1, y: 0, duration: 0.8, delay: 0.2, scrollTrigger: { trigger: '.show-title', start: 'top 85%' } });
+gsap.fromTo('.show-img', { opacity: 0, y: 60, scale: 0.95 },
+  { opacity: 1, y: 0, scale: 1, duration: 1, delay: 0.4, ease: 'power3.out', scrollTrigger: { trigger: '.show-img', start: 'top 85%' } });
+
+// Section 3: Three.js
+gsap.fromTo('#t3-label', { opacity: 0, y: 40 },
+  { opacity: 1, y: 0, duration: 0.8, scrollTrigger: { trigger: '#t3-label', start: 'top 80%' } });
+gsap.fromTo('#t3-title', { opacity: 0, y: 60 },
+  { opacity: 1, y: 0, duration: 1, delay: 0.2, scrollTrigger: { trigger: '#t3-title', start: 'top 80%' } });
+gsap.fromTo('#t3-desc', { opacity: 0, y: 30 },
+  { opacity: 1, y: 0, duration: 0.8, delay: 0.4, scrollTrigger: { trigger: '#t3-desc', start: 'top 85%' } });
+
+// Section 4: 功能卡片
+gsap.fromTo('.func-label', { opacity: 0, y: 30 },
+  { opacity: 1, y: 0, duration: 0.7, scrollTrigger: { trigger: '.func-label', start: 'top 85%' } });
+gsap.fromTo('.func-title', { opacity: 0, y: 40 },
+  { opacity: 1, y: 0, duration: 0.8, delay: 0.2, scrollTrigger: { trigger: '.func-title', start: 'top 85%' } });
+gsap.fromTo('.func-card', { opacity: 0, y: 80, scale: 0.95 },
+  { opacity: 1, y: 0, scale: 1, duration: 0.8, stagger: 0.15, delay: 0.4, ease: 'power3.out',
+    scrollTrigger: { trigger: '.func-card', start: 'top 85%' } });
+
+// Section 5: Swiper
+gsap.fromTo('.swiper-label', { opacity: 0, y: 30 },
+  { opacity: 1, y: 0, duration: 0.7, scrollTrigger: { trigger: '.swiper-label', start: 'top 85%' } });
+gsap.fromTo('.swiper-title', { opacity: 0, y: 40 },
+  { opacity: 1, y: 0, duration: 0.8, delay: 0.2, scrollTrigger: { trigger: '.swiper-title', start: 'top 85%' } });
+gsap.fromTo('#testimonial-swiper', { opacity: 0, y: 60 },
+  { opacity: 1, y: 0, duration: 1, delay: 0.4, scrollTrigger: { trigger: '#testimonial-swiper', start: 'top 85%' } });
+
+// Section 6: 数字计数
+document.querySelectorAll('.stat-number').forEach(el => {
+  const target = parseInt(el.dataset.target);
+  gsap.fromTo(el, { textContent: 0 }, {
+    textContent: target, duration: 2.5, ease: 'power2.out', snap: { textContent: 1 },
+    scrollTrigger: { trigger: el, start: 'top 85%' },
+    onUpdate() { el.textContent = Math.round(this.targets()[0].textContent); }
+  });
+  gsap.to(el, { opacity: 1, duration: 0.5, scrollTrigger: { trigger: el, start: 'top 85%' } });
+});
+
+// Section 7: CTA
+gsap.fromTo('.cta-title', { opacity: 0, y: 80 },
+  { opacity: 1, y: 0, duration: 1, scrollTrigger: { trigger: '.cta-title', start: 'top 80%' } });
+gsap.fromTo('.cta-desc', { opacity: 0, y: 40 },
+  { opacity: 1, y: 0, duration: 0.8, delay: 0.3, scrollTrigger: { trigger: '.cta-desc', start: 'top 85%' } });
+gsap.fromTo('.cta-img', { opacity: 0, y: 40 },
+  { opacity: 1, y: 0, duration: 0.8, delay: 0.5, scrollTrigger: { trigger: '.cta-img', start: 'top 90%' } });
+gsap.fromTo('.cta-btn', { opacity: 0, scale: 0.8 },
+  { opacity: 1, scale: 1, duration: 0.7, delay: 0.7, ease: 'back.out(1.7)', scrollTrigger: { trigger: '.cta-btn', start: 'top 90%' } });
+</script>
+</body>
+</html>
