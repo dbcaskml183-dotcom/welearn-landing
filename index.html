@@ -357,10 +357,14 @@
 
 <!-- ==================== SCRIPTS ==================== -->
 <script>
-// ── LENIS ──
+const isEdge=/Edg\//.test(navigator.userAgent);
+
+// ── LENIS (skip on Edge) ──
+if(!isEdge){
 const lenis=new Lenis({duration:1.2,easing:t=>Math.min(1,1.001-Math.pow(2,-10*t)),smoothWheel:true});
 function raf(t){lenis.raf(t);requestAnimationFrame(raf)}requestAnimationFrame(raf);
 lenis.on('scroll',ScrollTrigger.update);gsap.ticker.add(t=>lenis.raf(t*1000));gsap.ticker.lagSmoothing(0);
+}
 
 // ── 150 荧光粒子，全页固定，远离鼠标 ──
 (function(){
@@ -394,8 +398,7 @@ lenis.on('scroll',ScrollTrigger.update);gsap.ticker.add(t=>lenis.raf(t*1000));gs
       if(!isEdge)ctx.shadowBlur=0
     }
   }
-  const isEdge=/Edg\//.test(navigator.userAgent);
-  const N=isEdge?2500:5500;
+  const N=isEdge?1200:5500;
   for(let i=0;i<N;i++)ps.push(new P());
   function anim(){ctx.clearRect(0,0,c.width,c.height);ps.forEach(p=>{p.u();p.d()});ctx.globalAlpha=1;aid=requestAnimationFrame(anim)}anim();
   addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
@@ -403,7 +406,8 @@ lenis.on('scroll',ScrollTrigger.update);gsap.ticker.add(t=>lenis.raf(t*1000));gs
   addEventListener('beforeunload',()=>{if(aid)cancelAnimationFrame(aid)});
 })();
 
-// ── THREE.JS ──
+// ── THREE.JS (skip on Edge) ──
+if(!isEdge){
 import('three').then(T=>{
   const THREE=T,canvas=document.getElementById('three-canvas'),sec=canvas.parentElement;
   const r=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true});r.setPixelRatio(Math.min(devicePixelRatio,2));
@@ -414,7 +418,7 @@ import('three').then(T=>{
   pg.setAttribute('position',new THREE.BufferAttribute(pos,3));scene.add(new THREE.Points(pg,new THREE.PointsMaterial({color:0x22d3ee,size:.04,transparent:true,opacity:.6,blending:THREE.AdditiveBlending,depthWrite:false})));
   function resize(){const rect=sec.getBoundingClientRect();r.setSize(rect.width,rect.height);cam.aspect=rect.width/rect.height;cam.updateProjectionMatrix()}addEventListener('resize',resize);resize();
   function a3d(t){knot.rotation.x=t*.00025;knot.rotation.y=t*.0004;knot.rotation.z=t*.00015;r.render(scene,cam);requestAnimationFrame(a3d)}requestAnimationFrame(a3d);
-});
+});}
 
 // ── FAQ toggle animation ──
 document.querySelectorAll('details.faq-item').forEach(d=>{
