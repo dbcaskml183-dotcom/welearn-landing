@@ -375,9 +375,9 @@ lenis.on('scroll',ScrollTrigger.update);gsap.ticker.add(t=>lenis.raf(t*1000));gs
   class P{
     constructor(){
       this.x=Math.random()*c.width;this.y=Math.random()*c.height;
-      this.vx=(Math.random()-.5)*(isEdge?0.8:2.2);this.vy=(Math.random()-.5)*(isEdge?0.8:2.2);
+      this.vx=(Math.random()-.5)*(isEdge?0.8:2.8);this.vy=(Math.random()-.5)*(isEdge?0.8:2.8);
       this.s=Math.random()*2+0.8;this.cl=COLS[Math.floor(Math.random()*COLS.length)];
-      this.a=Math.random()*.4+.2;this.p=Math.random()*Math.PI*2;this.ps=(isEdge?.01:.04)+Math.random()*(isEdge?.04:.16);
+      this.a=Math.random()*.4+.2;this.p=Math.random()*Math.PI*2;this.ps=(isEdge?.01:.05)+Math.random()*(isEdge?.04:.20);
     }
     u(){
           this.x+=this.vx;this.y+=this.vy;this.p+=this.ps;
@@ -385,11 +385,11 @@ lenis.on('scroll',ScrollTrigger.update);gsap.ticker.add(t=>lenis.raf(t*1000));gs
           if(this.y<-20)this.y=c.height+20;if(this.y>c.height+20)this.y=-20;
           const dx=this.x-mx,dy=this.y-my,dist=Math.sqrt(dx*dx+dy*dy);
           if(dist<200&&dist>0){
-            if(dist<40){const f=(40-dist)/40*8;this.vx+=dx/dist*f*(isEdge?.03:.05);this.vy+=dy/dist*f*(isEdge?.03:.05)}
-            else{const f=(200-dist)/200*3;this.vx+=dx/dist*f*(isEdge?.01:.02);this.vy+=dy/dist*f*(isEdge?.01:.02)}
-            this.vx*=.94;this.vy*=.94
+            if(dist<40){const f=(40-dist)/40*8;this.vx+=dx/dist*f*(isEdge?.03:.07);this.vy+=dy/dist*f*(isEdge?.03:.07)}
+            else{const f=(200-dist)/200*3;this.vx+=dx/dist*f*(isEdge?.01:.03);this.vy+=dy/dist*f*(isEdge?.01:.03)}
+            this.vx*=.92;this.vy*=.92
           }
-          const spd=Math.sqrt(this.vx*this.vx+this.vy*this.vy);const cap=isEdge?0.8:1.8;if(spd>cap){const s=cap/spd*(.8+Math.random()*.4);this.vx*=s;this.vy*=s}
+          const spd=Math.sqrt(this.vx*this.vx+this.vy*this.vy);const cap=isEdge?0.8:2.2;if(spd>cap){const s=cap/spd*(.8+Math.random()*.4);this.vx*=s;this.vy*=s}
         }
     d(){
       const aa=this.a*(.5+.5*Math.sin(this.p));
