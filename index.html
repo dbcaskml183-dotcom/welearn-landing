@@ -23,15 +23,15 @@
   .lenis.lenis-smooth [data-lenis-prevent]{overscroll-behavior:contain}
   .lenis.lenis-stopped{overflow:hidden}.lenis.lenis-scrolling iframe{pointer-events:none}
 
-  #particle-canvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:1}
+  #particle-canvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:1;will-change:transform;transform:translateZ(0)}
   #three-canvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;opacity:0.25;pointer-events:none}
 
   .text-grad{background:linear-gradient(180deg,#f8fafc 30%,#38bdf8 70%,#22d3ee 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 40px rgba(56,189,248,.2))}
 
-  .card-pop{transition:transform .5s cubic-bezier(.23,1,.32,1),box-shadow .5s;transform-style:preserve-3d;perspective:1000px;background:linear-gradient(135deg,rgba(255,255,255,.04) 0%,rgba(255,255,255,.01) 50%,rgba(0,0,0,.02) 100%);backdrop-filter:blur(2px) brightness(1.04);-webkit-backdrop-filter:blur(2px) brightness(1.04);border:none;border-radius:16px;box-shadow:inset 4px 4px 8px rgba(255,255,255,.12),inset -4px -4px 8px rgba(0,0,0,.4),0 4px 24px rgba(0,0,0,.5),0 12px 48px rgba(0,0,0,.35),0 24px 80px rgba(6,182,212,.04)}
+  .card-pop{transition:transform .5s cubic-bezier(.23,1,.32,1),box-shadow .5s;transform-style:preserve-3d;perspective:1000px;background:linear-gradient(135deg,rgba(255,255,255,.04) 0%,rgba(255,255,255,.01) 50%,rgba(0,0,0,.02) 100%);backdrop-filter:blur(2px) brightness(1.04);-webkit-backdrop-filter:blur(2px) brightness(1.04);border:none;border-radius:16px;contain:layout style paint;box-shadow:inset 4px 4px 8px rgba(255,255,255,.12),inset -4px -4px 8px rgba(0,0,0,.4),0 4px 24px rgba(0,0,0,.5),0 12px 48px rgba(0,0,0,.35),0 24px 80px rgba(6,182,212,.04)}
   .card-pop:hover{transform:rotateY(-4deg) rotateX(2deg) scale(1.03);box-shadow:inset 6px 6px 12px rgba(255,255,255,.18),inset -6px -6px 12px rgba(0,0,0,.5),0 8px 36px rgba(0,0,0,.55),0 20px 64px rgba(0,0,0,.4),0 32px 100px rgba(6,182,212,.08);background:linear-gradient(135deg,rgba(255,255,255,.06) 0%,rgba(255,255,255,.02) 50%,rgba(0,0,0,.03) 100%);backdrop-filter:blur(3px) brightness(1.06);-webkit-backdrop-filter:blur(3px) brightness(1.06)}
 
-  .glass-card{background:linear-gradient(135deg,rgba(255,255,255,.04) 0%,rgba(255,255,255,.01) 50%,rgba(0,0,0,.02) 100%);backdrop-filter:blur(2px) brightness(1.04);-webkit-backdrop-filter:blur(2px) brightness(1.04);border:none;border-radius:16px;box-shadow:inset 4px 4px 8px rgba(255,255,255,.12),inset -4px -4px 8px rgba(0,0,0,.4),0 4px 24px rgba(0,0,0,.5),0 12px 48px rgba(0,0,0,.35),0 24px 80px rgba(6,182,212,.04);transition:all .4s ease}
+  .glass-card{background:linear-gradient(135deg,rgba(255,255,255,.04) 0%,rgba(255,255,255,.01) 50%,rgba(0,0,0,.02) 100%);backdrop-filter:blur(2px) brightness(1.04);-webkit-backdrop-filter:blur(2px) brightness(1.04);border:none;border-radius:16px;contain:layout style paint;box-shadow:inset 4px 4px 8px rgba(255,255,255,.12),inset -4px -4px 8px rgba(0,0,0,.4),0 4px 24px rgba(0,0,0,.5),0 12px 48px rgba(0,0,0,.35),0 24px 80px rgba(6,182,212,.04);transition:all .4s ease}
   .glass-card:hover{border:none;background:linear-gradient(135deg,rgba(255,255,255,.06) 0%,rgba(255,255,255,.02) 50%,rgba(0,0,0,.03) 100%);backdrop-filter:blur(3px) brightness(1.06);-webkit-backdrop-filter:blur(3px) brightness(1.06);box-shadow:inset 6px 6px 12px rgba(255,255,255,.18),inset -6px -6px 12px rgba(0,0,0,.5),0 8px 36px rgba(0,0,0,.55),0 20px 64px rgba(0,0,0,.4),0 32px 100px rgba(6,182,212,.08)}
 
   .img-placeholder{display:flex;align-items:center;justify-content:center;font-weight:600;letter-spacing:.06em;border:2px dashed rgba(56,189,248,.15);position:relative;overflow:hidden;border-radius:12px}
@@ -385,10 +385,9 @@ lenis.on('scroll',ScrollTrigger.update);gsap.ticker.add(t=>lenis.raf(t*1000));gs
         }
     d(){
       const aa=this.a*(.5+.5*Math.sin(this.p));
+      ctx.shadowColor=this.cl;ctx.shadowBlur=this.s*3.5;
       ctx.beginPath();ctx.arc(this.x,this.y,this.s,0,Math.PI*2);ctx.fillStyle=this.cl;ctx.globalAlpha=aa;ctx.fill();
-      const g=ctx.createRadialGradient(this.x,this.y,0,this.x,this.y,this.s*3.5);
-      g.addColorStop(0,this.cl);g.addColorStop(1,'transparent');
-      ctx.beginPath();ctx.arc(this.x,this.y,this.s*3.5,0,Math.PI*2);ctx.fillStyle=g;ctx.globalAlpha=aa*.08;ctx.fill();
+      ctx.shadowBlur=0
     }
   }
   for(let i=0;i<5500;i++)ps.push(new P());
