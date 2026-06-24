@@ -67,13 +67,17 @@
 
   <div class="relative z-10 max-w-[1320px] mx-auto px-6 md:px-9 w-full text-center">
     <div class="inline-flex items-center gap-2 bg-[#38bdf8]/10 border border-[#38bdf8]/20 px-3 py-1 rounded-full text-xs text-[#38bdf8] mb-8 opacity-0" id="hero-badge">
-      <span class="w-1.5 h-1.5 rounded-full bg-[#22c55e] animate-pulse"></span> v3.2 · 已服务 12,000+ 大学生
+      <span class="w-1.5 h-1.5 rounded-full bg-[#22c55e] animate-pulse"></span> v1.0 · 已服务 12,000+ 大学生
     </div>
 
-    <h1 class="text-[clamp(2rem,5vw,4rem)] font-semibold leading-[1.05] tracking-[-0.025em] mb-6 opacity-0" id="hero-title">
+    <h1 class="text-[clamp(2rem,5vw,4rem)] font-semibold leading-[1.05] tracking-[-0.025em] mb-4 opacity-0" id="hero-title">
       WeLearn 自动化脚本<br>
       <span class="text-grad">刷课从未如此简单</span>
     </h1>
+
+    <div class="opacity-0 mb-8" id="hero-version">
+      <span class="text-[clamp(3rem,8vw,7rem)] font-black leading-none tracking-[-0.04em] text-grad" style="background:linear-gradient(135deg,#38bdf8 0%,#22d3ee 35%,#2dd4bf 65%,#14b8a6 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 60px rgba(56,189,248,.35))">WeLearn自动化脚本_V1</span>
+    </div>
 
     <p class="text-lg md:text-xl text-[#cbd5e1] max-w-[640px] mx-auto mb-10 leading-relaxed opacity-0" id="hero-sub">
       Windows 桌面工具，解压即用。基于 DeepSeek AI 云端引擎，自动完成 Chapter Test、WeTest、课程进度和学习时长。绿色免安装，不占本地算力。
@@ -277,37 +281,37 @@
   <div class="max-w-[720px] mx-auto px-6 md:px-9">
     <div class="text-center mb-12">
       <div class="text-xs font-semibold uppercase tracking-[0.08em] text-[#38bdf8] mb-4 opacity-0 faq-label">常见问题</div>
-      <h2 class="text-[2.5rem] font-semibold tracking-[-0.02em] leading-[1.08] opacity-0 faq-title">你可能想问的</h2>
+      <h2 class="text-[2.5rem] font-semibold tracking-[-0.02em] leading-[1.08] opacity-0 faq-title">您可能想问的</h2>
     </div>
 
-    <div class="flex flex-col gap-2">
-      <details class="bg-[#101826] border border-[#1c2638] rounded-lg overflow-hidden opacity-0 faq-item" data-fly="left">
-        <summary class="flex items-center justify-between px-5 py-4 cursor-pointer text-sm font-medium list-none select-none">
-          这个工具安全吗？会被学校发现吗？
-          <svg class="w-4.5 h-4.5 text-[#8492a6] transition-transform duration-200 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    <div class="flex flex-col gap-1.5 max-w-[680px] mx-auto">
+      <details class="bg-[#101826] border border-[#1c2638] rounded-lg overflow-hidden opacity-0 faq-item group" data-fly="left">
+        <summary class="flex items-center justify-between px-5 py-3 cursor-pointer text-sm font-medium list-none select-none hover:bg-[#1c2638]/30 transition-colors">
+          <span>这个工具安全吗？会被学校发现吗？</span>
+          <svg class="w-4 h-4 text-[#8492a6] transition-transform duration-200 shrink-0 ml-3 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
         </summary>
-        <div class="px-5 pb-4 text-xs text-[#cbd5e1] leading-relaxed">工具在本地运行，所有操作模拟真实浏览器行为（随机延迟、鼠标轨迹模拟），与人工操作无异。数据仅保存在本地，不会上传你的个人信息。但我们建议合理使用，不要在同一门课上过度刷时长。</div>
+        <div class="px-5 pb-3.5 text-xs text-[#cbd5e1] leading-relaxed">工具在本地运行，所有操作模拟真实浏览器行为（随机延迟、鼠标轨迹模拟），与人工操作无异。数据仅保存在本地，不会上传你的个人信息。但我们建议合理使用，不要在同一门课上过度刷时长。</div>
       </details>
-      <details class="bg-[#101826] border border-[#1c2638] rounded-lg overflow-hidden opacity-0 faq-item" data-fly="right">
-        <summary class="flex items-center justify-between px-5 py-4 cursor-pointer text-sm font-medium list-none select-none">
-          需要什么样的电脑配置？
-          <svg class="w-4.5 h-4.5 text-[#8492a6] transition-transform duration-200 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      <details class="bg-[#101826] border border-[#1c2638] rounded-lg overflow-hidden opacity-0 faq-item group" data-fly="right">
+        <summary class="flex items-center justify-between px-5 py-3 cursor-pointer text-sm font-medium list-none select-none hover:bg-[#1c2638]/30 transition-colors">
+          <span>需要什么样的电脑配置？</span>
+          <svg class="w-4 h-4 text-[#8492a6] transition-transform duration-200 shrink-0 ml-3 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
         </summary>
-        <div class="px-5 pb-4 text-xs text-[#cbd5e1] leading-relaxed">Windows 10/11 即可，集成显卡轻薄本完全够用。所有 AI 计算在云端完成，本地只需要能运行 Python 和浏览器。工具首次启动会自动安装所需依赖。</div>
+        <div class="px-5 pb-3.5 text-xs text-[#cbd5e1] leading-relaxed">Windows 10/11 即可，集成显卡轻薄本完全够用。所有 AI 计算在云端完成，本地只需要能运行 Python 和浏览器。工具首次启动会自动安装所需依赖。</div>
       </details>
-      <details class="bg-[#101826] border border-[#1c2638] rounded-lg overflow-hidden opacity-0 faq-item" data-fly="left">
-        <summary class="flex items-center justify-between px-5 py-4 cursor-pointer text-sm font-medium list-none select-none">
-          DeepSeek API Key 怎么获取？
-          <svg class="w-4.5 h-4.5 text-[#8492a6] transition-transform duration-200 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      <details class="bg-[#101826] border border-[#1c2638] rounded-lg overflow-hidden opacity-0 faq-item group" data-fly="left">
+        <summary class="flex items-center justify-between px-5 py-3 cursor-pointer text-sm font-medium list-none select-none hover:bg-[#1c2638]/30 transition-colors">
+          <span>DeepSeek API Key 怎么获取？</span>
+          <svg class="w-4 h-4 text-[#8492a6] transition-transform duration-200 shrink-0 ml-3 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
         </summary>
-        <div class="px-5 pb-4 text-xs text-[#cbd5e1] leading-relaxed">打开 DeepSeek 官网（platform.deepseek.com）注册账号 → 创建 API Key → 复制粘贴到工具中即可。首次注册赠送 500 万 tokens，足够用一学期。</div>
+        <div class="px-5 pb-3.5 text-xs text-[#cbd5e1] leading-relaxed">打开 DeepSeek 官网（platform.deepseek.com）注册账号 → 创建 API Key → 复制粘贴到工具中即可。首次注册赠送 500 万 tokens，足够用一学期。</div>
       </details>
-      <details class="bg-[#101826] border border-[#1c2638] rounded-lg overflow-hidden opacity-0 faq-item" data-fly="right">
-        <summary class="flex items-center justify-between px-5 py-4 cursor-pointer text-sm font-medium list-none select-none">
-          支持 Mac 或 Linux 吗？
-          <svg class="w-4.5 h-4.5 text-[#8492a6] transition-transform duration-200 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      <details class="bg-[#101826] border border-[#1c2638] rounded-lg overflow-hidden opacity-0 faq-item group" data-fly="right">
+        <summary class="flex items-center justify-between px-5 py-3 cursor-pointer text-sm font-medium list-none select-none hover:bg-[#1c2638]/30 transition-colors">
+          <span>支持 Mac 或 Linux 吗？</span>
+          <svg class="w-4 h-4 text-[#8492a6] transition-transform duration-200 shrink-0 ml-3 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
         </summary>
-        <div class="px-5 pb-4 text-xs text-[#cbd5e1] leading-relaxed">当前版本仅支持 Windows 10/11。Mac 和 Linux 版正在开发中，预计下学期上线。你可以关注我们的更新通知。</div>
+        <div class="px-5 pb-3.5 text-xs text-[#cbd5e1] leading-relaxed">当前版本仅支持 Windows 10/11。Mac 和 Linux 版正在开发中，预计下学期上线。你可以关注我们的更新通知。</div>
       </details>
     </div>
   </div>
@@ -374,7 +378,7 @@ lenis.on('scroll',ScrollTrigger.update);gsap.ticker.add(t=>lenis.raf(t*1000));gs
       ctx.beginPath();ctx.arc(this.x,this.y,this.s*5,0,Math.PI*2);ctx.fillStyle=g;ctx.globalAlpha=aa*.1;ctx.fill();
     }
   }
-  for(let i=0;i<150;i++)ps.push(new P());
+  for(let i=0;i<350;i++)ps.push(new P());
   function dc(){
     for(let i=0;i<ps.length;i++)for(let j=i+1;j<ps.length;j++){
       const dx=ps[i].x-ps[j].x,dy=ps[i].y-ps[j].y,dist=Math.sqrt(dx*dx+dy*dy);
@@ -415,10 +419,11 @@ gsap.to('#nav-links',{opacity:1,duration:.4,delay:.3});
 const ht=gsap.timeline({defaults:{ease:'power3.out'}});
 ht.to('#hero-badge',{opacity:1,y:0,duration:.5},.05)
   .from('#hero-title',{opacity:0,scale:.75,y:120,duration:1.5,ease:'power4.out'},.1)
-  .from('#hero-sub',{opacity:0,y:50,duration:.9},.45)
-  .from('#hero-cta',{opacity:0,y:35,duration:.7},.75)
-  .to('#hero-stats',{opacity:1,y:0,duration:.8},1)
-  .to('#scroll-hint',{opacity:.7,duration:.6},1.3);
+  .from('#hero-version',{opacity:0,scale:.6,y:80,duration:1.3,ease:'power4.out'},.2)
+  .from('#hero-sub',{opacity:0,y:50,duration:.9},.55)
+  .from('#hero-cta',{opacity:0,y:35,duration:.7},.85)
+  .to('#hero-stats',{opacity:1,y:0,duration:.8},1.1)
+  .to('#scroll-hint',{opacity:.7,duration:.6},1.4);
 
 gsap.to('[data-parallax]',{y:'-20%',ease:'none',scrollTrigger:{trigger:'section',start:'top top',end:'bottom top',scrub:true}});
 
