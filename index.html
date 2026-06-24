@@ -76,7 +76,7 @@
     </h1>
 
     <div class="opacity-0 mb-8" id="hero-version">
-      <span class="text-[clamp(3rem,8vw,7rem)] font-black leading-none tracking-[-0.04em] text-grad" style="background:linear-gradient(135deg,#38bdf8 0%,#22d3ee 35%,#2dd4bf 65%,#14b8a6 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 60px rgba(56,189,248,.35))">WeLearn自动化脚本_V1</span>
+      <span class="block text-[clamp(2.5rem,7vw,6rem)] font-black leading-[0.9] tracking-[-0.04em]" style="background:linear-gradient(135deg,#38bdf8 0%,#22d3ee 30%,#2dd4bf 55%,#14b8a6 80%,#5eead4 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 80px rgba(56,189,248,.45)) drop-shadow(0 0 20px rgba(34,211,238,.3));">WeLearn自动化脚本_V1</span>
     </div>
 
     <p class="text-lg md:text-xl text-[#cbd5e1] max-w-[640px] mx-auto mb-10 leading-relaxed opacity-0" id="hero-sub">
@@ -354,38 +354,32 @@ lenis.on('scroll',ScrollTrigger.update);gsap.ticker.add(t=>lenis.raf(t*1000));gs
   const c=document.getElementById('particle-canvas'),ctx=c.getContext('2d');
   let ps=[],mx=-9999,my=-9999,aid;
   function rs(){c.width=innerWidth;c.height=innerHeight}addEventListener('resize',rs);rs();
-  const COLS=['#38bdf8','#22d3ee','#2dd4bf','#7dd3fc','#67e8f9','#5eead4'];
+  const COLS=['#38bdf8','#22d3ee','#2dd4bf','#7dd3fc','#67e8f9','#5eead4','#0ea5e9','#06b6d4'];
   class P{
     constructor(){
       this.x=Math.random()*c.width;this.y=Math.random()*c.height;
-      this.vx=(Math.random()-.5)*.35;this.vy=(Math.random()-.5)*.35;
-      this.s=Math.random()*2.3+1;this.cl=COLS[Math.floor(Math.random()*COLS.length)];
-      this.a=Math.random()*.45+.25;this.p=Math.random()*Math.PI*2;this.ps=.006+.025*Math.random();
+      this.vx=(Math.random()-.5)*.3;this.vy=(Math.random()-.5)*.3;
+      this.s=Math.random()*2+0.8;this.cl=COLS[Math.floor(Math.random()*COLS.length)];
+      this.a=Math.random()*.4+.2;this.p=Math.random()*Math.PI*2;this.ps=.005+.02*Math.random();
     }
     u(){
       this.x+=this.vx;this.y+=this.vy;this.p+=this.ps;
       if(this.x<-20)this.x=c.width+20;if(this.x>c.width+20)this.x=-20;
       if(this.y<-20)this.y=c.height+20;if(this.y>c.height+20)this.y=-20;
       const dx=this.x-mx,dy=this.y-my,dist=Math.sqrt(dx*dx+dy*dy);
-      if(dist<180&&dist>0){const f=(180-dist)/180*2.8;this.vx+=dx/dist*f*.035;this.vy+=dy/dist*f*.035;this.vx*=.97;this.vy*=.97}
-      const spd=Math.sqrt(this.vx*this.vx+this.vy*this.vy);if(spd>.85){this.vx=this.vx/spd*.85;this.vy=this.vy/spd*.85}
+      if(dist<200&&dist>0){const f=(200-dist)/200*3;this.vx+=dx/dist*f*.04;this.vy+=dy/dist*f*.04;this.vx*=.96;this.vy*=.96}
+      const spd=Math.sqrt(this.vx*this.vx+this.vy*this.vy);if(spd>.7){this.vx=this.vx/spd*.7;this.vy=this.vy/spd*.7}
     }
     d(){
-      const aa=this.a*(.55+.45*Math.sin(this.p));
+      const aa=this.a*(.5+.5*Math.sin(this.p));
       ctx.beginPath();ctx.arc(this.x,this.y,this.s,0,Math.PI*2);ctx.fillStyle=this.cl;ctx.globalAlpha=aa;ctx.fill();
-      const g=ctx.createRadialGradient(this.x,this.y,0,this.x,this.y,this.s*5);
+      const g=ctx.createRadialGradient(this.x,this.y,0,this.x,this.y,this.s*3.5);
       g.addColorStop(0,this.cl);g.addColorStop(1,'transparent');
-      ctx.beginPath();ctx.arc(this.x,this.y,this.s*5,0,Math.PI*2);ctx.fillStyle=g;ctx.globalAlpha=aa*.1;ctx.fill();
+      ctx.beginPath();ctx.arc(this.x,this.y,this.s*3.5,0,Math.PI*2);ctx.fillStyle=g;ctx.globalAlpha=aa*.08;ctx.fill();
     }
   }
-  for(let i=0;i<350;i++)ps.push(new P());
-  function dc(){
-    for(let i=0;i<ps.length;i++)for(let j=i+1;j<ps.length;j++){
-      const dx=ps[i].x-ps[j].x,dy=ps[i].y-ps[j].y,dist=Math.sqrt(dx*dx+dy*dy);
-      if(dist<130){ctx.beginPath();ctx.moveTo(ps[i].x,ps[i].y);ctx.lineTo(ps[j].x,ps[j].y);ctx.strokeStyle=ps[i].cl;ctx.globalAlpha=(1-dist/130)*.08;ctx.lineWidth=.5;ctx.stroke()}
-    }
-  }
-  function anim(){ctx.clearRect(0,0,c.width,c.height);ps.forEach(p=>{p.u();p.d()});dc();ctx.globalAlpha=1;aid=requestAnimationFrame(anim)}anim();
+  for(let i=0;i<3500;i++)ps.push(new P());
+  function anim(){ctx.clearRect(0,0,c.width,c.height);ps.forEach(p=>{p.u();p.d()});ctx.globalAlpha=1;aid=requestAnimationFrame(anim)}anim();
   addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
   addEventListener('mouseleave',()=>{mx=-9999;my=-9999});
   addEventListener('beforeunload',()=>{if(aid)cancelAnimationFrame(aid)});
