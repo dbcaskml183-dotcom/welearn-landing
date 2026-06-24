@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" class="bg-[#070b12]">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -26,13 +26,13 @@
   #particle-canvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:1}
   #three-canvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;opacity:0.25;pointer-events:none}
 
-  .text-grad{background:linear-gradient(135deg,#f8fafc 30%,#38bdf8 70%,#22d3ee 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 40px rgba(56,189,248,.2))}
+  .text-grad{background:linear-gradient(180deg,#f8fafc 30%,#38bdf8 70%,#22d3ee 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 40px rgba(56,189,248,.2))}
 
-  .card-pop{transition:transform .5s cubic-bezier(.23,1,.32,1),box-shadow .5s,border-color .5s;transform-style:preserve-3d;perspective:1000px;background:rgba(16,24,38,.18);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(56,189,248,.08);border-radius:12px}
-  .card-pop:hover{transform:rotateY(-4deg) rotateX(2deg) scale(1.03);border-color:rgba(56,189,248,.35);box-shadow:0 20px 60px rgba(56,189,248,.15);background:rgba(16,24,38,.3)}
+  .card-pop{transition:transform .5s cubic-bezier(.23,1,.32,1),box-shadow .5s;transform-style:preserve-3d;perspective:1000px;background:linear-gradient(135deg,rgba(255,255,255,.04) 0%,rgba(255,255,255,.01) 50%,rgba(0,0,0,.02) 100%);backdrop-filter:blur(2px) brightness(1.04);-webkit-backdrop-filter:blur(2px) brightness(1.04);border:none;border-radius:16px;box-shadow:inset 4px 4px 8px rgba(255,255,255,.12),inset -4px -4px 8px rgba(0,0,0,.4),0 4px 24px rgba(0,0,0,.5),0 12px 48px rgba(0,0,0,.35),0 24px 80px rgba(6,182,212,.04)}
+  .card-pop:hover{transform:rotateY(-4deg) rotateX(2deg) scale(1.03);box-shadow:inset 6px 6px 12px rgba(255,255,255,.18),inset -6px -6px 12px rgba(0,0,0,.5),0 8px 36px rgba(0,0,0,.55),0 20px 64px rgba(0,0,0,.4),0 32px 100px rgba(6,182,212,.08);background:linear-gradient(135deg,rgba(255,255,255,.06) 0%,rgba(255,255,255,.02) 50%,rgba(0,0,0,.03) 100%);backdrop-filter:blur(3px) brightness(1.06);-webkit-backdrop-filter:blur(3px) brightness(1.06)}
 
-  .glass-card{background:rgba(16,24,38,.15);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid rgba(56,189,248,.06);border-radius:12px;transition:all .4s ease}
-  .glass-card:hover{border-color:rgba(56,189,248,.25);background:rgba(16,24,38,.25);box-shadow:0 12px 40px rgba(56,189,248,.1)}
+  .glass-card{background:linear-gradient(135deg,rgba(255,255,255,.04) 0%,rgba(255,255,255,.01) 50%,rgba(0,0,0,.02) 100%);backdrop-filter:blur(2px) brightness(1.04);-webkit-backdrop-filter:blur(2px) brightness(1.04);border:none;border-radius:16px;box-shadow:inset 4px 4px 8px rgba(255,255,255,.12),inset -4px -4px 8px rgba(0,0,0,.4),0 4px 24px rgba(0,0,0,.5),0 12px 48px rgba(0,0,0,.35),0 24px 80px rgba(6,182,212,.04);transition:all .4s ease}
+  .glass-card:hover{border:none;background:linear-gradient(135deg,rgba(255,255,255,.06) 0%,rgba(255,255,255,.02) 50%,rgba(0,0,0,.03) 100%);backdrop-filter:blur(3px) brightness(1.06);-webkit-backdrop-filter:blur(3px) brightness(1.06);box-shadow:inset 6px 6px 12px rgba(255,255,255,.18),inset -6px -6px 12px rgba(0,0,0,.5),0 8px 36px rgba(0,0,0,.55),0 20px 64px rgba(0,0,0,.4),0 32px 100px rgba(6,182,212,.08)}
 
   .img-placeholder{display:flex;align-items:center;justify-content:center;font-weight:600;letter-spacing:.06em;border:2px dashed rgba(56,189,248,.15);position:relative;overflow:hidden;border-radius:12px}
   .img-placeholder::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 8px,rgba(56,189,248,.02) 8px,rgba(56,189,248,.02) 10px)}
@@ -41,7 +41,7 @@
   ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:#070b12}::-webkit-scrollbar-thumb{background:#263246;border-radius:3px}
 </style>
 </head>
-<body class="bg-[#070b12] text-[#f8fafc] font-sans overflow-x-hidden">
+<body class="bg-transparent text-[#f8fafc] font-sans overflow-x-hidden">
 
 <!-- ==================== 粒子画布 ==================== -->
 <canvas id="particle-canvas"></canvas>
@@ -49,7 +49,7 @@
 <!-- ==================== NAV ==================== -->
 <nav class="fixed top-0 inset-x-0 z-50 backdrop-blur-xl bg-[#070b12]/70 border-b border-[#1c2638]/50">
   <div class="max-w-[1320px] mx-auto px-6 md:px-9 flex items-center justify-between h-14">
-    <div class="flex items-center gap-2.5 text-base font-semibold opacity-0" id="nav-brand">
+    <div class="flex items-center gap-2.5 text-base font-semibold opacity-0 cursor-pointer" id="nav-brand" onclick="window.scrollTo({top:0,behavior:'smooth'});setTimeout(()=>location.reload(),800)">
       <svg class="w-5.5 h-5.5 text-[#38bdf8]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
       WeLearn自动化
     </div>
@@ -58,7 +58,7 @@
       <a href="#howto" class="text-[#cbd5e1] hover:text-white transition-colors">使用流程</a>
       <a href="#tech" class="text-[#cbd5e1] hover:text-white transition-colors">技术</a>
       <a href="#faq" class="text-[#cbd5e1] hover:text-white transition-colors">FAQ</a>
-      <a href="#download" class="px-4 py-1.5 rounded-md bg-[#38bdf8] text-[#03111a] font-semibold hover:bg-[#2ca8df] transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-[#38bdf8]/20">立即下载</a>
+      <a href="WeLearn自动答题工具_V1.zip" download class="px-4 py-1.5 rounded-md bg-[#38bdf8] text-[#03111a] font-semibold hover:bg-[#2ca8df] transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-[#38bdf8]/20">立即下载</a>
     </div>
   </div>
 </nav>
@@ -87,7 +87,7 @@
     </p>
 
     <div class="flex gap-4 justify-center flex-wrap mb-16 opacity-0" id="hero-cta">
-      <a href="#download" class="inline-flex items-center gap-2 px-6 py-3.5 rounded-lg bg-[#38bdf8] text-[#03111a] font-semibold text-lg transition-all hover:bg-[#2ca8df] hover:-translate-y-1 hover:shadow-xl hover:shadow-[#38bdf8]/25">↓ 免费下载</a>
+      <a href="WeLearn自动答题工具_V1.zip" download class="inline-flex items-center gap-2 px-6 py-3.5 rounded-lg bg-[#38bdf8] text-[#03111a] font-semibold text-lg transition-all hover:bg-[#2ca8df] hover:-translate-y-1 hover:shadow-xl hover:shadow-[#38bdf8]/25">↓ 免费下载</a>
       <a href="#features" class="inline-flex items-center gap-2 px-6 py-3.5 rounded-lg border border-[#263246] font-semibold text-lg transition-all hover:border-[#38bdf8] hover:text-[#38bdf8] hover:-translate-y-1">了解功能 →</a>
     </div>
 
@@ -102,8 +102,11 @@
     </div>
   </div>
 
-  <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2.5 text-[#8492a6] text-sm uppercase tracking-[0.08em] opacity-0" id="scroll-hint">
-    <span>滚动以向下探索</span>
+  <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2.5 opacity-0" id="scroll-hint">
+    <div class="inline-flex items-center gap-1.5 bg-[#8492a6]/8 border border-[#8492a6]/15 px-3.5 py-1.5 rounded-full text-xs text-[#8492a6] tracking-[0.06em]">
+      <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+      滚动以向下探索
+    </div>
     <div class="w-px h-12 bg-gradient-to-b from-[#38bdf8] to-transparent animate-pulse"></div>
   </div>
 </section>
@@ -114,12 +117,15 @@
     <div class="glass-card rounded-xl overflow-hidden opacity-0 demo-win">
       <div class="flex items-center gap-2 px-4 py-3 border-b border-[#1c2638] bg-[#070b12]">
         <span class="w-2.5 h-2.5 rounded-full bg-[#ef4444]"></span><span class="w-2.5 h-2.5 rounded-full bg-[#f59e0b]"></span><span class="w-2.5 h-2.5 rounded-full bg-[#22c55e]"></span>
-        <span class="text-xs text-[#8492a6] ml-2 font-mono">WeLearn-Auto v3.2</span>
+        <span class="text-xs text-[#8492a6] ml-2 font-mono">WeLearn-Auto v1.0</span>
       </div>
       <div class="h-[320px] flex items-center justify-center bg-[linear-gradient(180deg,rgba(56,189,248,.025)_0%,transparent_100%)]">
         <div class="text-center px-6">
-          <div class="img-placeholder w-72 h-40 mx-auto rounded-lg mb-5" style="background:linear-gradient(135deg,#0c1929 0%,#1e3a5f 100%);">
-            <span class="img-id">IMG-DEMO · #1E3A5F</span>
+          <div class="w-72 h-40 mx-auto rounded-lg mb-5 overflow-hidden cursor-pointer relative group" onclick="document.getElementById('lightbox').classList.remove('hidden')" style="box-shadow:0 0 30px rgba(56,189,248,.15)">
+            <img src="welearn-demo.jpg" alt="WeLearn 自动化脚本界面截图" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center">
+              <span class="opacity-0 group-hover:opacity-100 transition-opacity text-white text-xs bg-black/60 px-3 py-1.5 rounded-full">🔍 点击放大</span>
+            </div>
           </div>
           <div class="flex gap-2 flex-wrap justify-center">
             <span class="text-[11px] px-2.5 py-1 rounded-full border border-[#38bdf8]/30 text-[#38bdf8] bg-[#38bdf8]/6">绿色免安装</span>
@@ -137,7 +143,7 @@
 <section class="relative py-20 md:py-28" id="features">
   <div class="max-w-[1320px] mx-auto px-6 md:px-9">
     <div class="text-center mb-14">
-      <div class="text-xs font-semibold uppercase tracking-[0.08em] text-[#38bdf8] mb-4 opacity-0 feat-label">四大核心功能</div>
+      <div class="text-sm font-semibold uppercase tracking-[0.08em] text-[#38bdf8] mb-4 opacity-0 feat-label">四大核心功能</div>
       <h2 class="text-[2.5rem] font-semibold tracking-[-0.02em] leading-[1.08] mb-4 opacity-0 feat-title">Cover 你所有的<span class="text-grad">刷课场景</span></h2>
       <p class="text-base text-[#cbd5e1] max-w-[65ch] mx-auto leading-relaxed opacity-0 feat-desc">从自动答题到挂时长，一套工具搞定 WeLearn 平台所有任务。</p>
     </div>
@@ -179,7 +185,7 @@
 <section class="relative py-20 md:py-28 bg-[#101826] border-y border-[#1c2638]" id="tech">
   <div class="max-w-[1320px] mx-auto px-6 md:px-9">
     <div class="text-center mb-14">
-      <div class="text-xs font-semibold uppercase tracking-[0.08em] text-[#38bdf8] mb-4 opacity-0 tech-label">技术亮点</div>
+      <div class="text-sm font-semibold uppercase tracking-[0.08em] text-[#38bdf8] mb-4 opacity-0 tech-label">技术亮点</div>
       <h2 class="text-[2.5rem] font-semibold tracking-[-0.02em] leading-[1.08] opacity-0 tech-title">为什么选<span class="text-grad"> WeLearn 自动化脚本</span></h2>
     </div>
 
@@ -214,7 +220,7 @@
   <canvas id="three-canvas"></canvas>
   <div class="absolute inset-0 bg-gradient-to-b from-[#101826]/80 via-transparent to-[#070b12]/80 pointer-events-none"></div>
   <div class="relative z-10 text-center px-6">
-    <div class="text-xs font-semibold uppercase tracking-[0.08em] text-[#38bdf8] mb-4 opacity-0 t3-label">技术架构</div>
+    <div class="text-sm font-semibold uppercase tracking-[0.08em] text-[#38bdf8] mb-4 opacity-0 t3-label">技术架构</div>
     <h2 class="text-[2.5rem] md:text-[3.5rem] font-semibold tracking-[-0.03em] leading-[1.1] mb-5 opacity-0 t3-title">
       轻量，<span class="text-grad">但强大</span>
     </h2>
@@ -226,28 +232,28 @@
 <section class="relative py-20 md:py-28" id="howto">
   <div class="max-w-[1320px] mx-auto px-6 md:px-9">
     <div class="text-center mb-14">
-      <div class="text-xs font-semibold uppercase tracking-[0.08em] text-[#38bdf8] mb-4 opacity-0 flow-label">使用流程</div>
+      <div class="text-sm font-semibold uppercase tracking-[0.08em] text-[#38bdf8] mb-4 opacity-0 flow-label">使用流程</div>
       <h2 class="text-[2.5rem] font-semibold tracking-[-0.02em] leading-[1.08] opacity-0 flow-title">四步上手，<span class="text-grad">五分钟搞定</span></h2>
     </div>
 
     <div class="grid grid-cols-2 md:grid-cols-4 gap-5">
       <div class="text-center relative opacity-0 flow-step" data-fly="left">
-        <div class="w-12 h-12 rounded-full bg-[#38bdf8]/10 border border-[#38bdf8]/25 flex items-center justify-center mx-auto mb-4 font-mono text-base font-semibold text-[#38bdf8]">1</div>
+        <div class="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4 font-mono text-lg font-bold text-[#38bdf8]" style="background:radial-gradient(circle at 35% 35%,rgba(255,255,255,.1),rgba(0,0,0,.15));backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);box-shadow:inset 2px 2px 4px rgba(255,255,255,.15),inset -2px -2px 4px rgba(0,0,0,.4),0 2px 10px rgba(0,0,0,.5),0 6px 20px rgba(6,182,212,.1)">1</div>
         <h3 class="text-sm font-semibold mb-2">下载解压</h3>
         <p class="text-xs text-[#cbd5e1]">下载压缩包，解压到任意目录。推荐 D 盘避免权限问题。</p>
       </div>
       <div class="text-center relative opacity-0 flow-step" data-fly="bottom">
-        <div class="w-12 h-12 rounded-full bg-[#38bdf8]/10 border border-[#38bdf8]/25 flex items-center justify-center mx-auto mb-4 font-mono text-base font-semibold text-[#38bdf8]">2</div>
+        <div class="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4 font-mono text-lg font-bold text-[#38bdf8]" style="background:radial-gradient(circle at 35% 35%,rgba(255,255,255,.1),rgba(0,0,0,.15));backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);box-shadow:inset 2px 2px 4px rgba(255,255,255,.15),inset -2px -2px 4px rgba(0,0,0,.4),0 2px 10px rgba(0,0,0,.5),0 6px 20px rgba(6,182,212,.1)">2</div>
         <h3 class="text-sm font-semibold mb-2">双击启动</h3>
         <p class="text-xs text-[#cbd5e1]">运行 startup.bat，自动检测安装 Python 依赖。</p>
       </div>
       <div class="text-center relative opacity-0 flow-step" data-fly="bottom">
-        <div class="w-12 h-12 rounded-full bg-[#38bdf8]/10 border border-[#38bdf8]/25 flex items-center justify-center mx-auto mb-4 font-mono text-base font-semibold text-[#38bdf8]">3</div>
+        <div class="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4 font-mono text-lg font-bold text-[#38bdf8]" style="background:radial-gradient(circle at 35% 35%,rgba(255,255,255,.1),rgba(0,0,0,.15));backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);box-shadow:inset 2px 2px 4px rgba(255,255,255,.15),inset -2px -2px 4px rgba(0,0,0,.4),0 2px 10px rgba(0,0,0,.5),0 6px 20px rgba(6,182,212,.1)">3</div>
         <h3 class="text-sm font-semibold mb-2">填写 API Key</h3>
         <p class="text-xs text-[#cbd5e1]">填入 DeepSeek API Key（仅需一次），Key 本地安全存储。</p>
       </div>
       <div class="text-center relative opacity-0 flow-step" data-fly="right">
-        <div class="w-12 h-12 rounded-full bg-[#38bdf8]/10 border border-[#38bdf8]/25 flex items-center justify-center mx-auto mb-4 font-mono text-base font-semibold text-[#38bdf8]">4</div>
+        <div class="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4 font-mono text-lg font-bold text-[#38bdf8]" style="background:radial-gradient(circle at 35% 35%,rgba(255,255,255,.1),rgba(0,0,0,.15));backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);box-shadow:inset 2px 2px 4px rgba(255,255,255,.15),inset -2px -2px 4px rgba(0,0,0,.4),0 2px 10px rgba(0,0,0,.5),0 6px 20px rgba(6,182,212,.1)">4</div>
         <h3 class="text-sm font-semibold mb-2">一键使用</h3>
         <p class="text-xs text-[#cbd5e1]">选择任务类型点开始，工具自动运行，完成推送通知。</p>
       </div>
@@ -283,7 +289,7 @@
 <section class="relative py-20 md:py-28" id="faq">
   <div class="max-w-[720px] mx-auto px-6 md:px-9">
     <div class="text-center mb-12">
-      <div class="text-xs font-semibold uppercase tracking-[0.08em] text-[#38bdf8] mb-4 opacity-0 faq-label">常见问题</div>
+      <div class="text-sm font-semibold uppercase tracking-[0.08em] text-[#38bdf8] mb-4 opacity-0 faq-label">常见问题</div>
       <h2 class="text-[2.5rem] font-semibold tracking-[-0.02em] leading-[1.08] opacity-0 faq-title">您可能想问的</h2>
     </div>
 
@@ -327,7 +333,7 @@
     <div class="glass-card py-14 px-8 text-center max-w-[720px] mx-auto opacity-0 cta-banner">
       <h2 class="text-[2.5rem] font-semibold tracking-[-0.02em] mb-4">现在就告别手动刷课</h2>
       <p class="text-base text-[#cbd5e1] mb-8 max-w-[480px] mx-auto">12,000+ 大学生已经用上了。解压即用，五分钟上手。</p>
-      <a href="#" class="inline-flex items-center gap-2 px-8 py-4 rounded-lg bg-[#38bdf8] text-[#03111a] font-semibold text-lg transition-all hover:bg-[#2ca8df] hover:-translate-y-1 hover:shadow-xl hover:shadow-[#38bdf8]/25">↓ 下载 WeLearn 自动化脚本</a>
+      <a href="WeLearn自动答题工具_V1.zip" download class="inline-flex items-center gap-2 px-8 py-4 rounded-lg bg-[#38bdf8] text-[#03111a] font-semibold text-lg transition-all hover:bg-[#2ca8df] hover:-translate-y-1 hover:shadow-xl hover:shadow-[#38bdf8]/25">↓ 下载 WeLearn 自动化脚本</a>
       <div class="mt-4 text-xs text-[#8492a6]">Windows 10/11 · 解压后约 45MB · 绿色免安装</div>
     </div>
   </div>
@@ -361,18 +367,22 @@ lenis.on('scroll',ScrollTrigger.update);gsap.ticker.add(t=>lenis.raf(t*1000));gs
   class P{
     constructor(){
       this.x=Math.random()*c.width;this.y=Math.random()*c.height;
-      this.vx=(Math.random()-.5)*.9;this.vy=(Math.random()-.5)*.9;
+      this.vx=(Math.random()-.5)*1.8;this.vy=(Math.random()-.5)*1.8;
       this.s=Math.random()*2+0.8;this.cl=COLS[Math.floor(Math.random()*COLS.length)];
-      this.a=Math.random()*.4+.2;this.p=Math.random()*Math.PI*2;this.ps=.015+.06*Math.random();
+      this.a=Math.random()*.4+.2;this.p=Math.random()*Math.PI*2;this.ps=.03+.12*Math.random();
     }
     u(){
-      this.x+=this.vx;this.y+=this.vy;this.p+=this.ps;
-      if(this.x<-20)this.x=c.width+20;if(this.x>c.width+20)this.x=-20;
-      if(this.y<-20)this.y=c.height+20;if(this.y>c.height+20)this.y=-20;
-      const dx=this.x-mx,dy=this.y-my,dist=Math.sqrt(dx*dx+dy*dy);
-      if(dist<200&&dist>0){const f=(200-dist)/200*3;this.vx+=dx/dist*f*.04;this.vy+=dy/dist*f*.04;this.vx*=.96;this.vy*=.96}
-      const spd=Math.sqrt(this.vx*this.vx+this.vy*this.vy);if(spd>.7){this.vx=this.vx/spd*.7;this.vy=this.vy/spd*.7}
-    }
+          this.x+=this.vx;this.y+=this.vy;this.p+=this.ps;
+          if(this.x<-20)this.x=c.width+20;if(this.x>c.width+20)this.x=-20;
+          if(this.y<-20)this.y=c.height+20;if(this.y>c.height+20)this.y=-20;
+          const dx=this.x-mx,dy=this.y-my,dist=Math.sqrt(dx*dx+dy*dy);
+          if(dist<200&&dist>0){
+            if(dist<40){const f=(40-dist)/40*8;this.vx+=dx/dist*f*.05;this.vy+=dy/dist*f*.05}
+            else{const f=(200-dist)/200*3;this.vx+=dx/dist*f*.02;this.vy+=dy/dist*f*.02}
+            this.vx*=.94;this.vy*=.94
+          }
+          const spd=Math.sqrt(this.vx*this.vx+this.vy*this.vy);if(spd>1.4){const s=1.4/spd*(.8+Math.random()*.4);this.vx*=s;this.vy*=s}
+        }
     d(){
       const aa=this.a*(.5+.5*Math.sin(this.p));
       ctx.beginPath();ctx.arc(this.x,this.y,this.s,0,Math.PI*2);ctx.fillStyle=this.cl;ctx.globalAlpha=aa;ctx.fill();
@@ -381,7 +391,7 @@ lenis.on('scroll',ScrollTrigger.update);gsap.ticker.add(t=>lenis.raf(t*1000));gs
       ctx.beginPath();ctx.arc(this.x,this.y,this.s*3.5,0,Math.PI*2);ctx.fillStyle=g;ctx.globalAlpha=aa*.08;ctx.fill();
     }
   }
-  for(let i=0;i<3500;i++)ps.push(new P());
+  for(let i=0;i<5500;i++)ps.push(new P());
   function anim(){ctx.clearRect(0,0,c.width,c.height);ps.forEach(p=>{p.u();p.d()});ctx.globalAlpha=1;aid=requestAnimationFrame(anim)}anim();
   addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
   addEventListener('mouseleave',()=>{mx=-9999;my=-9999});
@@ -485,5 +495,10 @@ document.querySelectorAll('.faq-item').forEach((el,i)=>{
 // CTA
 gsap.fromTo('.cta-banner',{opacity:0,y:70,scale:.9},{opacity:1,y:0,scale:1,duration:1.1,ease:'power4.out',scrollTrigger:{trigger:'.cta-banner',start:'top 85%'}});
 </script>
+<!-- 图片灯箱 -->
+<div id="lightbox" class="hidden fixed inset-0 z-[999] bg-black/90 flex items-center justify-center cursor-pointer" onclick="this.classList.add('hidden')">
+  <span class="absolute top-6 right-6 text-white/60 hover:text-white text-2xl transition-colors">✕</span>
+  <img src="welearn-demo.jpg" alt="WeLearn 截图放大" class="max-w-[90vw] max-h-[90vh] rounded-xl shadow-2xl" onclick="event.stopPropagation()">
+</div>
 </body>
 </html>
