@@ -39,9 +39,13 @@
   .img-placeholder .img-id{position:relative;z-index:1;background:rgba(7,11,18,.9);padding:5px 14px;border-radius:6px;font-size:13px;color:rgba(56,189,248,.85)}
 
   ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:#070b12}::-webkit-scrollbar-thumb{background:#263246;border-radius:3px}
+  /* Edge fallback — kill backdrop-filter, use simple transparency */
+  .is-edge .card-pop,.is-edge .glass-card{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;background:rgba(16,24,38,.12)!important}
+  .is-edge .card-pop:hover,.is-edge .glass-card:hover{background:rgba(16,24,38,.2)!important}
 </style>
 </head>
 <body class="bg-transparent text-[#f8fafc] font-sans overflow-x-hidden">
+<script>if(/Edg\//.test(navigator.userAgent))document.body.classList.add('is-edge')</script>
 
 <!-- ==================== 粒子画布 ==================== -->
 <canvas id="particle-canvas"></canvas>
@@ -385,12 +389,14 @@ lenis.on('scroll',ScrollTrigger.update);gsap.ticker.add(t=>lenis.raf(t*1000));gs
         }
     d(){
       const aa=this.a*(.5+.5*Math.sin(this.p));
-      ctx.shadowColor=this.cl;ctx.shadowBlur=this.s*3.5;
+      if(!isEdge){ctx.shadowColor=this.cl;ctx.shadowBlur=this.s*3.5}
       ctx.beginPath();ctx.arc(this.x,this.y,this.s,0,Math.PI*2);ctx.fillStyle=this.cl;ctx.globalAlpha=aa;ctx.fill();
-      ctx.shadowBlur=0
+      if(!isEdge)ctx.shadowBlur=0
     }
   }
-  for(let i=0;i<5500;i++)ps.push(new P());
+  const isEdge=/Edg\//.test(navigator.userAgent);
+  const N=isEdge?2500:5500;
+  for(let i=0;i<N;i++)ps.push(new P());
   function anim(){ctx.clearRect(0,0,c.width,c.height);ps.forEach(p=>{p.u();p.d()});ctx.globalAlpha=1;aid=requestAnimationFrame(anim)}anim();
   addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
   addEventListener('mouseleave',()=>{mx=-9999;my=-9999});
