@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WeLearn 自动化脚本 — 学习，交给脚本就行</title>
+<title>WeLearn 自动化脚本 — 大学生自动刷课神器</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
-<script>tailwind.config={theme:{extend:{colors:{brand:{50:'#ecfeff',100:'#cffafe',400:'#22d3ee',500:'#06b6d4',600:'#0891b2',700:'#0e7490',900:'#083344'}},fontFamily:{sans:['"Inter"','"Noto Sans SC"','"PingFang SC"','system-ui','sans-serif'],display:['"Inter"','"Noto Sans SC"','system-ui','sans-serif']}}}}</script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script>tailwind.config={theme:{extend:{colors:{accent:'#38bdf8',accent2:'#22d3ee',accent3:'#2dd4bf',bg:'#070b12',surface:'#101826',fg:'#f8fafc',fg2:'#cbd5e1',muted:'#8492a6',border:'#263246',bsoft:'#1c2638'},fontFamily:{sans:['"Inter"','"Noto Sans SC"','"PingFang SC"','system-ui','sans-serif'],mono:['"Roboto Mono"','"SF Mono"','ui-monospace','monospace']}}}}</script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;550;600;700;800&family=Noto+Sans+SC:wght@400;500;700&family=Roboto+Mono:wght@400;600&display=swap" rel="stylesheet">
 
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/ScrollTrigger.min.js"></script>
@@ -24,407 +24,367 @@
   .lenis.lenis-stopped{overflow:hidden}.lenis.lenis-scrolling iframe{pointer-events:none}
 
   #particle-canvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:1}
-  #three-canvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;opacity:0.3;pointer-events:none}
+  #three-canvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;opacity:0.25;pointer-events:none}
 
-  :root{--accent:#06b6d4;--accent2:#22d3ee;--accent3:#2dd4bf;--bg:#021014;--surface:#0a1a20;--fg:#f0f8fa;--fg2:#b8d4dc;--muted:#709098;--border:#1a3a42;--bsoft:#122a32}
+  .text-grad{background:linear-gradient(135deg,#f8fafc 30%,#38bdf8 70%,#22d3ee 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 40px rgba(56,189,248,.2))}
 
-  .text-grad{background:linear-gradient(135deg,var(--fg) 30%,var(--accent2) 70%,var(--accent3) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 40px rgba(34,211,238,.3))}
+  .card-pop{transition:transform .5s cubic-bezier(.23,1,.32,1),box-shadow .5s,border-color .5s;transform-style:preserve-3d;perspective:1000px}
+  .card-pop:hover{transform:rotateY(-4deg) rotateX(2deg) scale(1.03);border-color:rgba(56,189,248,.3);box-shadow:0 20px 60px rgba(56,189,248,.1)}
 
-  .img-placeholder{display:flex;align-items:center;justify-content:center;font-weight:600;letter-spacing:.06em;border:2px dashed rgba(6,182,212,.18);position:relative;overflow:hidden;border-radius:12px}
-  .img-placeholder::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 8px,rgba(6,182,212,.025) 8px,rgba(6,182,212,.025) 10px)}
-  .img-placeholder .img-id{position:relative;z-index:1;background:rgba(8,51,68,.88);padding:5px 14px;border-radius:6px;font-size:13px;color:rgba(34,211,238,.85)}
+  .img-placeholder{display:flex;align-items:center;justify-content:center;font-weight:600;letter-spacing:.06em;border:2px dashed rgba(56,189,248,.15);position:relative;overflow:hidden;border-radius:12px}
+  .img-placeholder::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 8px,rgba(56,189,248,.02) 8px,rgba(56,189,248,.02) 10px)}
+  .img-placeholder .img-id{position:relative;z-index:1;background:rgba(7,11,18,.9);padding:5px 14px;border-radius:6px;font-size:13px;color:rgba(56,189,248,.85)}
 
-  /* Swiper */
-  .swiper{width:100%;padding:10px 0 60px}
-  .swiper-slide{height:auto;background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:all .5s cubic-bezier(.23,1,.32,1)}
-  .swiper-slide:hover{border-color:rgba(6,182,212,.5);transform:translateY(-8px);box-shadow:0 24px 60px rgba(6,182,212,.12)}
-  .swiper-pagination-bullet{background:var(--muted)}.swiper-pagination-bullet-active{background:var(--accent);box-shadow:0 0 8px rgba(6,182,212,.5)}
-
-  /* 3D cards */
-  .card-pop{transition:transform .5s cubic-bezier(.23,1,.32,1),box-shadow .5s, border-color .5s;transform-style:preserve-3d;perspective:1000px;background:var(--surface);border:1px solid var(--border);border-radius:12px}
-  .card-pop:hover{transform:rotateY(-5deg) rotateX(3deg) scale(1.04);border-color:rgba(6,182,212,.5);box-shadow:0 28px 70px rgba(6,182,212,.18)}
-
-  /* 步骤时间轴 */
-  .step-line{position:absolute;top:32px;left:50%;transform:translateX(-50%);width:2px;height:calc(100% - 64px);background:linear-gradient(to bottom,var(--accent),var(--accent3));opacity:.3}
-  .step-dot{width:16px;height:16px;border-radius:50%;background:var(--accent);box-shadow:0 0 20px rgba(6,182,212,.4);position:relative;z-index:2;flex-shrink:0}
-
-  ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+  ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:#070b12}::-webkit-scrollbar-thumb{background:#263246;border-radius:3px}
 </style>
 </head>
-<body class="bg-[#021014] text-[#f0f8fa] font-sans overflow-x-hidden">
+<body class="bg-[#070b12] text-[#f8fafc] font-sans overflow-x-hidden">
 
-<!-- ==================== PARTICLE CANVAS (全页固定) ==================== -->
+<!-- ==================== 粒子画布 ==================== -->
 <canvas id="particle-canvas"></canvas>
 
 <!-- ==================== NAV ==================== -->
-<nav class="fixed top-0 inset-x-0 z-50 backdrop-blur-xl bg-[#021014]/85 border-b border-[#122a32]">
-  <div class="max-w-[1200px] mx-auto px-6 md:px-8 flex items-center justify-between h-16">
-    <div class="flex items-center gap-3 text-lg font-semibold opacity-0" id="nav-brand">
-      <div class="w-8 h-8 rounded-md flex items-center justify-center font-bold text-sm text-[#021014] bg-gradient-to-br from-[#06b6d4] to-[#2dd4bf]">W</div>
-      <span class="hidden sm:inline">WeLearn 自动化脚本</span>
+<nav class="fixed top-0 inset-x-0 z-50 backdrop-blur-xl bg-[#070b12]/85 border-b border-[#1c2638]">
+  <div class="max-w-[1320px] mx-auto px-6 md:px-9 flex items-center justify-between h-14">
+    <div class="flex items-center gap-2.5 text-base font-semibold opacity-0" id="nav-brand">
+      <svg class="w-5.5 h-5.5 text-[#38bdf8]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      WeLearn自动化
     </div>
-    <div class="hidden md:flex items-center gap-6 text-sm font-medium opacity-0" id="nav-links">
-      <a href="#features" class="text-[#b8d4dc] hover:text-[#06b6d4] transition-colors">功能</a>
-      <a href="#how" class="text-[#b8d4dc] hover:text-[#06b6d4] transition-colors">使用流程</a>
-      <a href="#tech" class="text-[#b8d4dc] hover:text-[#06b6d4] transition-colors">技术</a>
-      <a href="#download" class="px-5 py-2 rounded bg-[#06b6d4] text-[#021014] font-semibold hover:bg-[#0891b2] transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-[#06b6d4]/25">立即下载</a>
+    <div class="hidden md:flex items-center gap-6 text-xs font-medium opacity-0" id="nav-links">
+      <a href="#features" class="text-[#cbd5e1] hover:text-white transition-colors">功能</a>
+      <a href="#howto" class="text-[#cbd5e1] hover:text-white transition-colors">使用流程</a>
+      <a href="#tech" class="text-[#cbd5e1] hover:text-white transition-colors">技术</a>
+      <a href="#faq" class="text-[#cbd5e1] hover:text-white transition-colors">FAQ</a>
+      <a href="#download" class="px-4 py-1.5 rounded-md bg-[#38bdf8] text-[#03111a] font-semibold hover:bg-[#2ca8df] transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-[#38bdf8]/20">立即下载</a>
     </div>
   </div>
 </nav>
 
 <!-- ==================== HERO ==================== -->
-<section class="relative min-h-screen flex items-center overflow-hidden pt-20">
-  <!-- 光晕层1：远处大光斑 -->
-  <div class="absolute top-1/4 left-1/4 w-[600px] h-[600px] rounded-full bg-[#06b6d4]/6 blur-[180px] pointer-events-none" data-parallax="0.3"></div>
-  <!-- 光晕层2：近处小光斑 -->
-  <div class="absolute bottom-1/3 right-1/4 w-[350px] h-[350px] rounded-full bg-[#2dd4bf]/8 blur-[140px] pointer-events-none" data-parallax="0.6"></div>
+<section class="relative min-h-screen flex items-center pt-20 overflow-hidden">
+  <div class="absolute inset-0 bg-[linear-gradient(rgba(56,189,248,.03)_1px,transparent_1px),linear-gradient(90deg,rgba(56,189,248,.03)_1px,transparent_1px)] bg-[length:60px_60px] pointer-events-none"></div>
+  <div class="absolute -top-[200px] left-1/2 -translate-x-1/2 w-[700px] h-[700px] bg-[radial-gradient(circle,rgba(56,189,248,.06)_0%,transparent_70%)] pointer-events-none" data-parallax="0.3"></div>
 
-  <div class="relative z-10 max-w-[1200px] mx-auto px-6 md:px-8 w-full">
-    <div class="max-w-[780px]">
-      <!-- Badge -->
-      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#06b6d4]/8 border border-[#06b6d4]/20 text-sm text-[#22d3ee] mb-10 opacity-0" id="hero-badge">
-        <span class="w-2 h-2 rounded-full bg-[#06b6d4] animate-pulse shadow-[0_0_10px_#06b6d4]"></span>
-        Windows 桌面工具 · DeepSeek AI 驱动
-      </div>
+  <div class="relative z-10 max-w-[1320px] mx-auto px-6 md:px-9 w-full text-center">
+    <div class="inline-flex items-center gap-2 bg-[#38bdf8]/10 border border-[#38bdf8]/20 px-3 py-1 rounded-full text-xs text-[#38bdf8] mb-8 opacity-0" id="hero-badge">
+      <span class="w-1.5 h-1.5 rounded-full bg-[#22c55e] animate-pulse"></span> v3.2 · 已服务 12,000+ 大学生
+    </div>
 
-      <!-- 标题层 -->
-      <h1 class="text-[4rem] md:text-[6rem] font-black leading-[0.95] tracking-[-0.03em] mb-8 text-grad opacity-0" id="hero-title" style="text-shadow:0 0 80px rgba(6,182,212,.2)">
-        学习，交给<br>脚本就行
-      </h1>
+    <h1 class="text-[clamp(2rem,5vw,4rem)] font-semibold leading-[1.05] tracking-[-0.025em] mb-6 opacity-0" id="hero-title">
+      WeLearn 自动化脚本<br>
+      <span class="text-grad">刷课从未如此简单</span>
+    </h1>
 
-      <!-- 副标题 -->
-      <p class="text-lg md:text-xl text-[#b8d4dc] leading-relaxed mb-10 max-w-[560px] opacity-0" id="hero-sub">
-        解压即用，双击启动。DeepSeek AI 自动完成 Chapter Test、WeTest、课程进度、学习时长 — 四条自动化流水线，解放你的时间。
-      </p>
+    <p class="text-lg md:text-xl text-[#cbd5e1] max-w-[640px] mx-auto mb-10 leading-relaxed opacity-0" id="hero-sub">
+      Windows 桌面工具，解压即用。基于 DeepSeek AI 云端引擎，自动完成 Chapter Test、WeTest、课程进度和学习时长。绿色免安装，不占本地算力。
+    </p>
 
-      <!-- CTA -->
-      <div class="flex flex-wrap gap-4 opacity-0" id="hero-cta">
-        <a href="#download" class="group inline-flex items-center gap-2 px-8 py-4 rounded-lg bg-[#06b6d4] text-[#021014] font-bold text-lg transition-all hover:bg-[#0891b2] hover:-translate-y-1 hover:shadow-2xl hover:shadow-[#06b6d4]/30">
-          ⚡ 立即下载
-          <span class="transition-transform group-hover:translate-x-1">→</span>
-        </a>
-        <a href="#how" class="inline-flex items-center gap-2 px-8 py-4 rounded-lg border border-[#1a3a42] font-semibold text-lg transition-all hover:border-[#06b6d4] hover:text-[#06b6d4] hover:-translate-y-1">
-          查看使用指南
-        </a>
-      </div>
+    <div class="flex gap-4 justify-center flex-wrap mb-16 opacity-0" id="hero-cta">
+      <a href="#download" class="inline-flex items-center gap-2 px-6 py-3.5 rounded-lg bg-[#38bdf8] text-[#03111a] font-semibold text-lg transition-all hover:bg-[#2ca8df] hover:-translate-y-1 hover:shadow-xl hover:shadow-[#38bdf8]/25">↓ 免费下载</a>
+      <a href="#features" class="inline-flex items-center gap-2 px-6 py-3.5 rounded-lg border border-[#263246] font-semibold text-lg transition-all hover:border-[#38bdf8] hover:text-[#38bdf8] hover:-translate-y-1">了解功能 →</a>
+    </div>
+
+    <div class="flex gap-8 justify-center flex-wrap opacity-0" id="hero-stats">
+      <div class="text-center"><div class="font-mono text-2xl font-semibold tracking-[-0.01em]">12,000+</div><div class="text-xs text-[#8492a6] mt-1">活跃用户</div></div>
+      <div class="w-px bg-[#1c2638] self-stretch"></div>
+      <div class="text-center"><div class="font-mono text-2xl font-semibold tracking-[-0.01em]">98.6%</div><div class="text-xs text-[#8492a6] mt-1">答题成功率</div></div>
+      <div class="w-px bg-[#1c2638] self-stretch"></div>
+      <div class="text-center"><div class="font-mono text-2xl font-semibold tracking-[-0.01em]">3 秒</div><div class="text-xs text-[#8492a6] mt-1">启动即用</div></div>
+      <div class="w-px bg-[#1c2638] self-stretch"></div>
+      <div class="text-center"><div class="font-mono text-2xl font-semibold tracking-[-0.01em]">0</div><div class="text-xs text-[#8492a6] mt-1">本地 GPU 依赖</div></div>
     </div>
   </div>
 
-  <!-- 滚动提示 -->
-  <div class="absolute bottom-14 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2.5 text-[#709098] text-sm uppercase tracking-[0.08em] opacity-0" id="scroll-hint">
+  <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2.5 text-[#8492a6] text-sm uppercase tracking-[0.08em] opacity-0" id="scroll-hint">
     <span>滚动以向下探索</span>
-    <div class="w-px h-14 bg-gradient-to-b from-[#06b6d4] to-transparent animate-pulse"></div>
+    <div class="w-px h-12 bg-gradient-to-b from-[#38bdf8] to-transparent animate-pulse"></div>
   </div>
 </section>
 
-<!-- ==================== FEATURES: 四大功能 ==================== -->
-<section class="relative py-28 md:py-36" id="features">
-  <div class="max-w-[1200px] mx-auto px-6 md:px-8">
-    <div class="text-center mb-20">
-      <div class="text-sm font-semibold tracking-[0.08em] uppercase text-[#06b6d4] mb-5 opacity-0 feat-head">四大自动化引擎</div>
-      <h2 class="text-[2.5rem] md:text-[3.5rem] font-bold tracking-[-0.02em] leading-[1.15] mb-5 opacity-0 feat-title">
-        <span class="text-grad">四条流水线</span>，<br class="sm:hidden">全面解放双手
-      </h2>
-      <p class="text-lg text-[#b8d4dc] max-w-[600px] mx-auto opacity-0 feat-desc">每个模块独立运行，按需启动。绿色免安装，双击即用。</p>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <!-- Card 1: Chapter Test — 从左侧飞入 -->
-      <div class="card-pop p-8 md:p-10 opacity-0 feat-card" data-fly="left">
-        <div class="flex items-start gap-5 mb-5">
-          <div class="w-14 h-14 rounded-xl bg-[#06b6d4]/10 border border-[#06b6d4]/20 flex items-center justify-center text-2xl shrink-0">📘</div>
-          <div>
-            <h3 class="text-xl font-bold mb-2">Chapter Test 自动答题</h3>
-            <div class="flex flex-wrap gap-2 mt-2">
-              <span class="text-[11px] px-2.5 py-1 rounded-full bg-[#06b6d4]/10 border border-[#06b6d4]/20 text-[#22d3ee] font-medium">DeepSeek AI</span>
-              <span class="text-[11px] px-2.5 py-1 rounded-full bg-[#2dd4bf]/10 border border-[#2dd4bf]/20 text-[#2dd4bf] font-medium">浏览器自动化</span>
-              <span class="text-[11px] px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-[#b8d4dc] font-medium">自动交卷</span>
-            </div>
-          </div>
-        </div>
-        <p class="text-[#b8d4dc] leading-relaxed mb-4">输入课程 ID 和账号密码，浏览器自动登录 WeLearn 平台，逐个完成所有章节测试。AI 智能分析题干和选项，选择题、填空题全适配。</p>
-        <div class="img-placeholder w-full h-36" style="background:linear-gradient(135deg,#083344 0%,#0891b2 100%);">
-          <span class="img-id">IMG-CHAPTEST · #0891B2</span>
-        </div>
+<!-- ==================== DEMO 窗口 ==================== -->
+<section class="relative py-20 md:py-24">
+  <div class="max-w-[960px] mx-auto px-6 md:px-9">
+    <div class="bg-[#101826] border border-[#1c2638] rounded-xl overflow-hidden opacity-0 demo-win">
+      <div class="flex items-center gap-2 px-4 py-3 border-b border-[#1c2638] bg-[#070b12]">
+        <span class="w-2.5 h-2.5 rounded-full bg-[#ef4444]"></span><span class="w-2.5 h-2.5 rounded-full bg-[#f59e0b]"></span><span class="w-2.5 h-2.5 rounded-full bg-[#22c55e]"></span>
+        <span class="text-xs text-[#8492a6] ml-2 font-mono">WeLearn-Auto v3.2</span>
       </div>
-
-      <!-- Card 2: WeTest — 从右侧飞入 -->
-      <div class="card-pop p-8 md:p-10 opacity-0 feat-card" data-fly="right">
-        <div class="flex items-start gap-5 mb-5">
-          <div class="w-14 h-14 rounded-xl bg-[#22d3ee]/10 border border-[#22d3ee]/20 flex items-center justify-center text-2xl shrink-0">📗</div>
-          <div>
-            <h3 class="text-xl font-bold mb-2">WeTest 自动答题</h3>
-            <div class="flex flex-wrap gap-2 mt-2">
-              <span class="text-[11px] px-2.5 py-1 rounded-full bg-[#06b6d4]/10 border border-[#06b6d4]/20 text-[#22d3ee] font-medium">粘贴即用</span>
-              <span class="text-[11px] px-2.5 py-1 rounded-full bg-[#2dd4bf]/10 border border-[#2dd4bf]/20 text-[#2dd4bf] font-medium">智能解析</span>
-            </div>
+      <div class="h-[320px] flex items-center justify-center bg-[linear-gradient(180deg,rgba(56,189,248,.025)_0%,transparent_100%)]">
+        <div class="text-center px-6">
+          <div class="img-placeholder w-72 h-40 mx-auto rounded-lg mb-5" style="background:linear-gradient(135deg,#0c1929 0%,#1e3a5f 100%);">
+            <span class="img-id">IMG-DEMO · #1E3A5F</span>
           </div>
-        </div>
-        <p class="text-[#b8d4dc] leading-relaxed mb-4">只需粘贴 WeTest 测试链接，脚本自动打开浏览器完成答题。无需手动登录课程，链接一击直达，AI 即刻响应。</p>
-        <div class="img-placeholder w-full h-36" style="background:linear-gradient(135deg,#155e75 0%,#06b6d4 100%);">
-          <span class="img-id">IMG-WETEST · #06B6D4</span>
-        </div>
-      </div>
-
-      <!-- Card 3: 刷进度 — 从底部上浮 -->
-      <div class="card-pop p-8 md:p-10 opacity-0 feat-card" data-fly="bottom">
-        <div class="flex items-start gap-5 mb-5">
-          <div class="w-14 h-14 rounded-xl bg-[#2dd4bf]/10 border border-[#2dd4bf]/20 flex items-center justify-center text-2xl shrink-0">📙</div>
-          <div>
-            <h3 class="text-xl font-bold mb-2">刷课程进度</h3>
-            <div class="flex flex-wrap gap-2 mt-2">
-              <span class="text-[11px] px-2.5 py-1 rounded-full bg-[#06b6d4]/10 border border-[#06b6d4]/20 text-[#22d3ee] font-medium">批量遍历</span>
-              <span class="text-[11px] px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-[#b8d4dc] font-medium">全自动</span>
-            </div>
+          <div class="flex gap-2 flex-wrap justify-center">
+            <span class="text-[11px] px-2.5 py-1 rounded-full border border-[#38bdf8]/30 text-[#38bdf8] bg-[#38bdf8]/6">绿色免安装</span>
+            <span class="text-[11px] px-2.5 py-1 rounded-full border border-[#1c2638] text-[#cbd5e1]">解压即用</span>
+            <span class="text-[11px] px-2.5 py-1 rounded-full border border-[#1c2638] text-[#cbd5e1]">双击 startup.bat</span>
+            <span class="text-[11px] px-2.5 py-1 rounded-full border border-[#38bdf8]/30 text-[#38bdf8] bg-[#38bdf8]/6">填 Key 即用</span>
           </div>
-        </div>
-        <p class="text-[#b8d4dc] leading-relaxed mb-4">自动遍历课程所有章节和单元，批量完成学习进度标记。无需手动逐章点击，一键跑完整个学期的课程要求。</p>
-        <div class="img-placeholder w-full h-36" style="background:linear-gradient(135deg,#0f766e 0%,#2dd4bf 100%);">
-          <span class="img-id">IMG-PROGRESS · #2DD4BF</span>
-        </div>
-      </div>
-
-      <!-- Card 4: 刷时长 — 缩放弹入 -->
-      <div class="card-pop p-8 md:p-10 opacity-0 feat-card" data-fly="scale">
-        <div class="flex items-start gap-5 mb-5">
-          <div class="w-14 h-14 rounded-xl bg-[#14b8a6]/10 border border-[#14b8a6]/20 flex items-center justify-center text-2xl shrink-0">⏱️</div>
-          <div>
-            <h3 class="text-xl font-bold mb-2">刷学习时长</h3>
-            <div class="flex flex-wrap gap-2 mt-2">
-              <span class="text-[11px] px-2.5 py-1 rounded-full bg-[#2dd4bf]/10 border border-[#2dd4bf]/20 text-[#2dd4bf] font-medium">后台挂机</span>
-              <span class="text-[11px] px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-[#b8d4dc] font-medium">模拟在线</span>
-            </div>
-          </div>
-        </div>
-        <p class="text-[#b8d4dc] leading-relaxed mb-4">模拟正常在线学习状态，自动挂满课程要求的学习时长。支持后台运行，不影响你使用电脑做其他事情。</p>
-        <div class="img-placeholder w-full h-36" style="background:linear-gradient(135deg,#0d9488 0%,#14b8a6 100%);">
-          <span class="img-id">IMG-TIME · #14B8A6</span>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ==================== HOW IT WORKS ==================== -->
-<section class="relative py-28 md:py-36 border-y border-[#1a3a42]" id="how">
-  <div class="max-w-[1200px] mx-auto px-6 md:px-8">
-    <div class="text-center mb-20">
-      <div class="text-sm font-semibold tracking-[0.08em] uppercase text-[#06b6d4] mb-5 opacity-0 how-head">使用流程</div>
-      <h2 class="text-[2.5rem] md:text-[3.5rem] font-bold tracking-[-0.02em] leading-[1.15] mb-5 opacity-0 how-title">
-        三步，<span class="text-grad">即刻运行</span>
-      </h2>
-      <p class="text-lg text-[#b8d4dc] opacity-0 how-desc">不需要安装 Python 环境，不需要配置命令行。解压 → 双击 → 填 Key → 开始。</p>
+<!-- ==================== FEATURES ==================== -->
+<section class="relative py-20 md:py-28" id="features">
+  <div class="max-w-[1320px] mx-auto px-6 md:px-9">
+    <div class="text-center mb-14">
+      <div class="text-xs font-semibold uppercase tracking-[0.08em] text-[#38bdf8] mb-4 opacity-0 feat-label">四大核心功能</div>
+      <h2 class="text-[2.5rem] font-semibold tracking-[-0.02em] leading-[1.08] mb-4 opacity-0 feat-title">Cover 你所有的<span class="text-grad">刷课场景</span></h2>
+      <p class="text-base text-[#cbd5e1] max-w-[65ch] mx-auto leading-relaxed opacity-0 feat-desc">从自动答题到挂时长，一套工具搞定 WeLearn 平台所有任务。</p>
     </div>
 
-    <div class="relative max-w-[800px] mx-auto">
-      <div class="step-line opacity-0" id="step-line"></div>
-      <div class="flex flex-col gap-16">
-        <!-- Step 1 -->
-        <div class="flex items-start gap-8 opacity-0 how-step" data-fly="left">
-          <div class="step-dot mt-1"></div>
-          <div class="bg-[#0a1a20] border border-[#1a3a42] rounded-xl p-6 md:p-8 flex-1">
-            <div class="text-[11px] font-bold tracking-[0.1em] uppercase text-[#06b6d4] mb-2">Step 1</div>
-            <h3 class="text-xl font-bold mb-3">📦 下载 & 解压</h3>
-            <p class="text-[#b8d4dc] leading-relaxed">下载 ZIP 压缩包，解压到任意文件夹。整个工具 <strong class="text-[#22d3ee]">不到 10MB</strong>，无需安装任何额外软件。</p>
-          </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <div class="card-pop bg-[#101826] border border-[#1c2638] rounded-xl p-7 opacity-0 feat-card" data-fly="left">
+        <div class="w-10 h-10 rounded-lg bg-[#38bdf8]/10 flex items-center justify-center mb-4 text-[#38bdf8]">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
         </div>
-        <!-- Step 2 -->
-        <div class="flex items-start gap-8 opacity-0 how-step" data-fly="right">
-          <div class="step-dot mt-1"></div>
-          <div class="bg-[#0a1a20] border border-[#1a3a42] rounded-xl p-6 md:p-8 flex-1">
-            <div class="text-[11px] font-bold tracking-[0.1em] uppercase text-[#06b6d4] mb-2">Step 2</div>
-            <h3 class="text-xl font-bold mb-3">⚡ 双击启动</h3>
-            <p class="text-[#b8d4dc] leading-relaxed">双击 <code class="bg-[#083344] px-2 py-0.5 rounded text-[#22d3ee] text-sm">启动.bat</code>，首次运行会自动安装 Python 依赖（约 2-5 分钟）。安装完成后自动重启，GUI 界面即刻出现。</p>
-          </div>
+        <h3 class="text-base font-semibold mb-2">Chapter Test 自动答题</h3>
+        <p class="text-xs text-[#cbd5e1] leading-relaxed">自动登录浏览器，抓取题目并调用 DeepSeek AI 云端作答。支持选择题、判断题、填空题和简答题，准确率 98%+。无需人工干预，批量完成章节测试。</p>
+      </div>
+      <div class="card-pop bg-[#101826] border border-[#1c2638] rounded-xl p-7 opacity-0 feat-card" data-fly="right">
+        <div class="w-10 h-10 rounded-lg bg-[#22d3ee]/10 flex items-center justify-center mb-4 text-[#22d3ee]">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
         </div>
-        <!-- Step 3 -->
-        <div class="flex items-start gap-8 opacity-0 how-step" data-fly="left">
-          <div class="step-dot mt-1"></div>
-          <div class="bg-[#0a1a20] border border-[#1a3a42] rounded-xl p-6 md:p-8 flex-1">
-            <div class="text-[11px] font-bold tracking-[0.1em] uppercase text-[#06b6d4] mb-2">Step 3</div>
-            <h3 class="text-xl font-bold mb-3">🔑 填入 API Key，开始自动化</h3>
-            <p class="text-[#b8d4dc] leading-relaxed">在 GUI 中输入 DeepSeek API Key 和 WeLearn 账号信息，点击对应功能按钮。浏览器自动打开，AI 开始答题 — 你只需要看着就好。</p>
-          </div>
+        <h3 class="text-base font-semibold mb-2">WeTest 自动答题</h3>
+        <p class="text-xs text-[#cbd5e1] leading-relaxed">粘贴 WeTest 测试链接，工具自动解析题目并逐题作答。支持随机延迟模拟人工操作，避免被检测。连考连过，稳定通过。</p>
+      </div>
+      <div class="card-pop bg-[#101826] border border-[#1c2638] rounded-xl p-7 opacity-0 feat-card" data-fly="bottom">
+        <div class="w-10 h-10 rounded-lg bg-[#2dd4bf]/10 flex items-center justify-center mb-4 text-[#2dd4bf]">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 016.5 2H20v20H6.5a2.5 2.5 0 010-5H20"/></svg>
         </div>
+        <h3 class="text-base font-semibold mb-2">刷课程进度</h3>
+        <p class="text-xs text-[#cbd5e1] leading-relaxed">批量遍历课程章节，自动标记学习进度。支持自定义速度与重试策略，覆盖全部章节类型。一次配置，全自动跑完整个课程。</p>
+      </div>
+      <div class="card-pop bg-[#101826] border border-[#1c2638] rounded-xl p-7 opacity-0 feat-card" data-fly="scale">
+        <div class="w-10 h-10 rounded-lg bg-[#14b8a6]/10 flex items-center justify-center mb-4 text-[#14b8a6]">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <h3 class="text-base font-semibold mb-2">刷学习时长</h3>
+        <p class="text-xs text-[#cbd5e1] leading-relaxed">模拟在线状态稳定挂满时长。智能保活机制防止掉线，网络波动自动重连。支持多课程同时挂机，最大化效率。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== TECH ==================== -->
+<section class="relative py-20 md:py-28 bg-[#101826] border-y border-[#1c2638]" id="tech">
+  <div class="max-w-[1320px] mx-auto px-6 md:px-9">
+    <div class="text-center mb-14">
+      <div class="text-xs font-semibold uppercase tracking-[0.08em] text-[#38bdf8] mb-4 opacity-0 tech-label">技术亮点</div>
+      <h2 class="text-[2.5rem] font-semibold tracking-[-0.02em] leading-[1.08] opacity-0 tech-title">为什么选<span class="text-grad"> WeLearn 自动化脚本</span></h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+      <div class="text-center p-8 bg-[#070b12] border border-[#1c2638] rounded-xl opacity-0 tech-card" data-fly="left">
+        <div class="w-14 h-14 rounded-full bg-[#22c55e]/12 flex items-center justify-center mx-auto mb-4 text-[#22c55e]">
+          <svg class="w-6.5 h-6.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3 class="text-base font-semibold mb-2">绿色免安装</h3>
+        <p class="text-xs text-[#cbd5e1]">解压 → 双击 startup.bat → 自动安装依赖 → 填 Key 即用。不写注册表、不留残留，U 盘也能带走。</p>
+      </div>
+      <div class="text-center p-8 bg-[#070b12] border border-[#1c2638] rounded-xl opacity-0 tech-card" data-fly="bottom">
+        <div class="w-14 h-14 rounded-full bg-[#38bdf8]/12 flex items-center justify-center mx-auto mb-4 text-[#38bdf8]">
+          <svg class="w-6.5 h-6.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+        </div>
+        <h3 class="text-base font-semibold mb-2">DeepSeek AI 云端引擎</h3>
+        <p class="text-xs text-[#cbd5e1]">纯文字题目通过云端 API 智能作答，无需本地 GPU。支持批量并发请求，速度远超人工。</p>
+      </div>
+      <div class="text-center p-8 bg-[#070b12] border border-[#1c2638] rounded-xl opacity-0 tech-card" data-fly="right">
+        <div class="w-14 h-14 rounded-full bg-[#f59e0b]/12 flex items-center justify-center mx-auto mb-4 text-[#f59e0b]">
+          <svg class="w-6.5 h-6.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h.01M15 9h.01M9 15h6"/></svg>
+        </div>
+        <h3 class="text-base font-semibold mb-2">不依赖本地 GPU</h3>
+        <p class="text-xs text-[#cbd5e1]">所有智能逻辑跑在云端，集成显卡轻薄本也能流畅运行。真正零门槛，有网就能用。</p>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ==================== THREE.JS 3D ==================== -->
-<section class="relative min-h-[60vh] flex items-center justify-center overflow-hidden">
+<section class="relative min-h-[55vh] flex items-center justify-center overflow-hidden">
   <canvas id="three-canvas"></canvas>
-  <div class="absolute inset-0 bg-gradient-to-b from-[#021014]/70 via-transparent to-[#021014]/70 pointer-events-none"></div>
+  <div class="absolute inset-0 bg-gradient-to-b from-[#101826]/80 via-transparent to-[#070b12]/80 pointer-events-none"></div>
   <div class="relative z-10 text-center px-6">
-    <div class="text-sm font-semibold tracking-[0.08em] uppercase text-[#06b6d4] mb-5 opacity-0 t3-label">技术架构</div>
-    <h2 class="text-[2.5rem] md:text-[4rem] font-bold tracking-[-0.03em] leading-[1.1] mb-6 opacity-0 t3-title">
+    <div class="text-xs font-semibold uppercase tracking-[0.08em] text-[#38bdf8] mb-4 opacity-0 t3-label">技术架构</div>
+    <h2 class="text-[2.5rem] md:text-[3.5rem] font-semibold tracking-[-0.03em] leading-[1.1] mb-5 opacity-0 t3-title">
       轻量，<span class="text-grad">但强大</span>
     </h2>
-    <p class="text-lg text-[#b8d4dc] max-w-lg mx-auto opacity-0 t3-desc">纯文字题走云端 DeepSeek API，不依赖本地 GPU。Python + Tkinter GUI，绿色免安装。</p>
+    <p class="text-base text-[#cbd5e1] max-w-lg mx-auto opacity-0 t3-desc">Python + Tkinter GUI，DeepSeek 云端 API。解压 45MB，双击即用。</p>
   </div>
 </section>
 
-<!-- ==================== TECH HIGHLIGHTS ==================== -->
-<section class="relative py-28 md:py-36" id="tech">
-  <div class="max-w-[1200px] mx-auto px-6 md:px-8">
-    <div class="text-center mb-20">
-      <div class="text-sm font-semibold tracking-[0.08em] uppercase text-[#06b6d4] mb-5 opacity-0 tech-head">技术亮点</div>
-      <h2 class="text-[2.5rem] md:text-[3.5rem] font-bold tracking-[-0.02em] leading-[1.15] opacity-0 tech-title">为什么<span class="text-grad">选它</span></h2>
+<!-- ==================== FLOW ==================== -->
+<section class="relative py-20 md:py-28" id="howto">
+  <div class="max-w-[1320px] mx-auto px-6 md:px-9">
+    <div class="text-center mb-14">
+      <div class="text-xs font-semibold uppercase tracking-[0.08em] text-[#38bdf8] mb-4 opacity-0 flow-label">使用流程</div>
+      <h2 class="text-[2.5rem] font-semibold tracking-[-0.02em] leading-[1.08] opacity-0 flow-title">四步上手，<span class="text-grad">五分钟搞定</span></h2>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-[900px] mx-auto">
-      <div class="flex gap-5 p-6 rounded-xl bg-[#0a1a20] border border-[#1a3a42] opacity-0 tech-item" data-fly="left">
-        <div class="text-3xl shrink-0">🧠</div>
-        <div>
-          <h3 class="font-bold mb-2">DeepSeek AI 驱动</h3>
-          <p class="text-sm text-[#b8d4dc] leading-relaxed">云端大模型智能分析题目，不占用本地资源。准确率持续优化，填空选择全适配。</p>
-        </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-5">
+      <div class="text-center relative opacity-0 flow-step" data-fly="left">
+        <div class="w-12 h-12 rounded-full bg-[#38bdf8]/10 border border-[#38bdf8]/25 flex items-center justify-center mx-auto mb-4 font-mono text-base font-semibold text-[#38bdf8]">1</div>
+        <h3 class="text-sm font-semibold mb-2">下载解压</h3>
+        <p class="text-xs text-[#cbd5e1]">下载压缩包，解压到任意目录。推荐 D 盘避免权限问题。</p>
       </div>
-      <div class="flex gap-5 p-6 rounded-xl bg-[#0a1a20] border border-[#1a3a42] opacity-0 tech-item" data-fly="right">
-        <div class="text-3xl shrink-0">🌐</div>
-        <div>
-          <h3 class="font-bold mb-2">浏览器自动化</h3>
-          <p class="text-sm text-[#b8d4dc] leading-relaxed">模拟真实浏览器操作，自动登录、翻页、提交。支持 Chrome / Edge，无需额外驱动。</p>
-        </div>
+      <div class="text-center relative opacity-0 flow-step" data-fly="bottom">
+        <div class="w-12 h-12 rounded-full bg-[#38bdf8]/10 border border-[#38bdf8]/25 flex items-center justify-center mx-auto mb-4 font-mono text-base font-semibold text-[#38bdf8]">2</div>
+        <h3 class="text-sm font-semibold mb-2">双击启动</h3>
+        <p class="text-xs text-[#cbd5e1]">运行 startup.bat，自动检测安装 Python 依赖。</p>
       </div>
-      <div class="flex gap-5 p-6 rounded-xl bg-[#0a1a20] border border-[#1a3a42] opacity-0 tech-item" data-fly="bottom">
-        <div class="text-3xl shrink-0">🔍</div>
-        <div>
-          <h3 class="font-bold mb-2">智能题目解析</h3>
-          <p class="text-sm text-[#b8d4dc] leading-relaxed">自动提取页面中的题干、选项、题型。支持单选题、多选题、填空题，自动适配答题策略。</p>
-        </div>
+      <div class="text-center relative opacity-0 flow-step" data-fly="bottom">
+        <div class="w-12 h-12 rounded-full bg-[#38bdf8]/10 border border-[#38bdf8]/25 flex items-center justify-center mx-auto mb-4 font-mono text-base font-semibold text-[#38bdf8]">3</div>
+        <h3 class="text-sm font-semibold mb-2">填写 API Key</h3>
+        <p class="text-xs text-[#cbd5e1]">填入 DeepSeek API Key（仅需一次），Key 本地安全存储。</p>
       </div>
-      <div class="flex gap-5 p-6 rounded-xl bg-[#0a1a20] border border-[#1a3a42] opacity-0 tech-item" data-fly="scale">
-        <div class="text-3xl shrink-0">🪶</div>
-        <div>
-          <h3 class="font-bold mb-2">无需本地 GPU</h3>
-          <p class="text-sm text-[#b8d4dc] leading-relaxed">所有 AI 计算在云端完成。任何 Windows 10/11 电脑都能运行，轻薄本照样流畅。</p>
-        </div>
+      <div class="text-center relative opacity-0 flow-step" data-fly="right">
+        <div class="w-12 h-12 rounded-full bg-[#38bdf8]/10 border border-[#38bdf8]/25 flex items-center justify-center mx-auto mb-4 font-mono text-base font-semibold text-[#38bdf8]">4</div>
+        <h3 class="text-sm font-semibold mb-2">一键使用</h3>
+        <p class="text-xs text-[#cbd5e1]">选择任务类型点开始，工具自动运行，完成推送通知。</p>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ==================== STATS ==================== -->
-<section class="relative border-y border-[#1a3a42]">
-  <div class="max-w-[1200px] mx-auto">
-    <div class="grid grid-cols-2 md:grid-cols-4 divide-x divide-[#1a3a42]">
+<section class="relative border-y border-[#1c2638]">
+  <div class="max-w-[1320px] mx-auto">
+    <div class="grid grid-cols-2 md:grid-cols-4 divide-x divide-[#1c2638]">
       <div class="text-center py-14 md:py-18 px-6">
-        <div class="text-[2.8rem] md:text-[3.5rem] font-black tracking-[-0.03em] leading-none mb-3 text-grad opacity-0 stat-num" data-target="4">0</div>
-        <div class="text-sm text-[#709098] font-medium">大自动化引擎</div>
+        <div class="text-[2.5rem] md:text-[3rem] font-semibold font-mono tracking-[-0.02em] leading-none mb-3 text-[#f8fafc] opacity-0 stat-num" data-target="4">0</div>
+        <div class="text-xs text-[#8492a6] font-medium">大自动化引擎</div>
       </div>
       <div class="text-center py-14 md:py-18 px-6">
-        <div class="text-[2.8rem] md:text-[3.5rem] font-black tracking-[-0.03em] leading-none mb-3 text-grad opacity-0 stat-num" data-target="50">0</div>
-        <div class="text-sm text-[#709098] font-medium">+ 支持课程</div>
+        <div class="text-[2.5rem] md:text-[3rem] font-semibold font-mono tracking-[-0.02em] leading-none mb-3 text-[#f8fafc] opacity-0 stat-num" data-target="50">0</div>
+        <div class="text-xs text-[#8492a6] font-medium">+ 支持课程</div>
       </div>
       <div class="text-center py-14 md:py-18 px-6">
-        <div class="text-[2.8rem] md:text-[3.5rem] font-black tracking-[-0.03em] leading-none mb-3 text-grad opacity-0 stat-num" data-target="92">0</div>
-        <div class="text-sm text-[#709098] font-medium">% AI 答题准确率</div>
+        <div class="text-[2.5rem] md:text-[3rem] font-semibold font-mono tracking-[-0.02em] leading-none mb-3 text-[#38bdf8] opacity-0 stat-num" data-target="98">0</div>
+        <div class="text-xs text-[#8492a6] font-medium">% AI 答题准确率</div>
       </div>
       <div class="text-center py-14 md:py-18 px-6">
-        <div class="text-[2.8rem] md:text-[3.5rem] font-black tracking-[-0.03em] leading-none mb-3 text-grad opacity-0 stat-num" data-target="10">0</div>
-        <div class="text-sm text-[#709098] font-medium">MB 超小体积</div>
+        <div class="text-[2.5rem] md:text-[3rem] font-semibold font-mono tracking-[-0.02em] leading-none mb-3 text-[#f8fafc] opacity-0 stat-num" data-target="45">0</div>
+        <div class="text-xs text-[#8492a6] font-medium">MB 超小体积</div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== FAQ ==================== -->
+<section class="relative py-20 md:py-28" id="faq">
+  <div class="max-w-[720px] mx-auto px-6 md:px-9">
+    <div class="text-center mb-12">
+      <div class="text-xs font-semibold uppercase tracking-[0.08em] text-[#38bdf8] mb-4 opacity-0 faq-label">常见问题</div>
+      <h2 class="text-[2.5rem] font-semibold tracking-[-0.02em] leading-[1.08] opacity-0 faq-title">你可能想问的</h2>
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <details class="bg-[#101826] border border-[#1c2638] rounded-lg overflow-hidden opacity-0 faq-item" data-fly="left">
+        <summary class="flex items-center justify-between px-5 py-4 cursor-pointer text-sm font-medium list-none select-none">
+          这个工具安全吗？会被学校发现吗？
+          <svg class="w-4.5 h-4.5 text-[#8492a6] transition-transform duration-200 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <div class="px-5 pb-4 text-xs text-[#cbd5e1] leading-relaxed">工具在本地运行，所有操作模拟真实浏览器行为（随机延迟、鼠标轨迹模拟），与人工操作无异。数据仅保存在本地，不会上传你的个人信息。但我们建议合理使用，不要在同一门课上过度刷时长。</div>
+      </details>
+      <details class="bg-[#101826] border border-[#1c2638] rounded-lg overflow-hidden opacity-0 faq-item" data-fly="right">
+        <summary class="flex items-center justify-between px-5 py-4 cursor-pointer text-sm font-medium list-none select-none">
+          需要什么样的电脑配置？
+          <svg class="w-4.5 h-4.5 text-[#8492a6] transition-transform duration-200 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <div class="px-5 pb-4 text-xs text-[#cbd5e1] leading-relaxed">Windows 10/11 即可，集成显卡轻薄本完全够用。所有 AI 计算在云端完成，本地只需要能运行 Python 和浏览器。工具首次启动会自动安装所需依赖。</div>
+      </details>
+      <details class="bg-[#101826] border border-[#1c2638] rounded-lg overflow-hidden opacity-0 faq-item" data-fly="left">
+        <summary class="flex items-center justify-between px-5 py-4 cursor-pointer text-sm font-medium list-none select-none">
+          DeepSeek API Key 怎么获取？
+          <svg class="w-4.5 h-4.5 text-[#8492a6] transition-transform duration-200 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <div class="px-5 pb-4 text-xs text-[#cbd5e1] leading-relaxed">打开 DeepSeek 官网（platform.deepseek.com）注册账号 → 创建 API Key → 复制粘贴到工具中即可。首次注册赠送 500 万 tokens，足够用一学期。</div>
+      </details>
+      <details class="bg-[#101826] border border-[#1c2638] rounded-lg overflow-hidden opacity-0 faq-item" data-fly="right">
+        <summary class="flex items-center justify-between px-5 py-4 cursor-pointer text-sm font-medium list-none select-none">
+          支持 Mac 或 Linux 吗？
+          <svg class="w-4.5 h-4.5 text-[#8492a6] transition-transform duration-200 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <div class="px-5 pb-4 text-xs text-[#cbd5e1] leading-relaxed">当前版本仅支持 Windows 10/11。Mac 和 Linux 版正在开发中，预计下学期上线。你可以关注我们的更新通知。</div>
+      </details>
     </div>
   </div>
 </section>
 
 <!-- ==================== CTA ==================== -->
-<section class="relative py-32 md:py-44 text-center overflow-hidden" id="download">
-  <div class="absolute top-0 left-1/2 -translate-x-1/2 w-4/5 h-px bg-gradient-to-r from-transparent via-[#06b6d4] to-transparent opacity-40"></div>
-  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-[#06b6d4]/4 blur-[140px] pointer-events-none"></div>
-  <div class="relative z-10 max-w-[640px] mx-auto px-6">
-    <div class="text-sm font-semibold tracking-[0.08em] uppercase text-[#06b6d4] mb-5 opacity-0 cta-label">开始自动化</div>
-    <h2 class="text-[2.5rem] md:text-[3.5rem] font-black tracking-[-0.03em] leading-[1.1] mb-6 opacity-0 cta-title">
-      把时间还给<br><span class="text-grad">真正重要的事</span>
-    </h2>
-    <p class="text-lg text-[#b8d4dc] mb-10 opacity-0 cta-desc">解压即用，双击启动。四合一自动化脚本，让 AI 替你完成繁琐的学习任务。</p>
-    <div class="img-placeholder max-w-sm mx-auto h-32 rounded-xl mb-10 opacity-0 cta-img" style="background:linear-gradient(135deg,#0891b2 0%,#06b6d4 50%,#22d3ee 100%);">
-      <span class="img-id">IMG-DOWNLOAD · #22D3EE</span>
-    </div>
-    <div class="flex justify-center flex-wrap gap-4 opacity-0 cta-btns">
-      <a href="#" class="group inline-flex items-center gap-2 px-10 py-5 rounded-lg bg-gradient-to-r from-[#06b6d4] to-[#22d3ee] text-[#021014] font-bold text-xl transition-all hover:-translate-y-1 hover:shadow-2xl hover:shadow-[#06b6d4]/30">
-        ⚡ 免费下载
-        <span class="transition-transform group-hover:translate-x-1">→</span>
-      </a>
-      <a href="#" class="inline-flex items-center gap-2 px-10 py-5 rounded-lg border border-[#1a3a42] font-semibold text-xl transition-all hover:border-[#06b6d4] hover:text-[#06b6d4] hover:-translate-y-1">
-        📖 使用文档
-      </a>
+<section class="relative py-24 md:py-32 text-center overflow-hidden" id="download">
+  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-[#38bdf8]/3 blur-[120px] pointer-events-none"></div>
+  <div class="relative z-10 max-w-[1320px] mx-auto px-6 md:px-9">
+    <div class="bg-[linear-gradient(135deg,rgba(56,189,248,.06)_0%,transparent_100%)] border border-[#38bdf8]/15 rounded-xl py-14 px-8 text-center max-w-[720px] mx-auto opacity-0 cta-banner">
+      <h2 class="text-[2.5rem] font-semibold tracking-[-0.02em] mb-4">现在就告别手动刷课</h2>
+      <p class="text-base text-[#cbd5e1] mb-8 max-w-[480px] mx-auto">12,000+ 大学生已经用上了。解压即用，五分钟上手。</p>
+      <a href="#" class="inline-flex items-center gap-2 px-8 py-4 rounded-lg bg-[#38bdf8] text-[#03111a] font-semibold text-lg transition-all hover:bg-[#2ca8df] hover:-translate-y-1 hover:shadow-xl hover:shadow-[#38bdf8]/25">↓ 下载 WeLearn 自动化脚本</a>
+      <div class="mt-4 text-xs text-[#8492a6]">Windows 10/11 · 解压后约 45MB · 绿色免安装</div>
     </div>
   </div>
 </section>
 
 <!-- ==================== FOOTER ==================== -->
-<footer class="border-t border-[#122a32] py-12 md:py-16 relative z-10">
-  <div class="max-w-[1200px] mx-auto px-6 md:px-8">
-    <div class="grid grid-cols-2 md:grid-cols-[2fr_1fr_1fr_1fr] gap-8 md:gap-12 mb-12">
-      <div>
-        <div class="flex items-center gap-3 text-lg font-semibold mb-3">
-          <div class="w-8 h-8 rounded-md flex items-center justify-center font-bold text-sm text-[#021014] bg-gradient-to-br from-[#06b6d4] to-[#2dd4bf]">W</div>
-          WeLearn 自动化脚本
-        </div>
-        <p class="text-sm text-[#709098] max-w-[280px]">Windows 桌面自动化工具。DeepSeek AI 驱动，绿色免安装，双击即用。</p>
-      </div>
-      <div><h4 class="text-sm font-semibold uppercase tracking-[0.04em] mb-4">功能</h4><ul class="flex flex-col gap-3 text-sm text-[#b8d4dc]"><li><a href="#" class="hover:text-[#06b6d4] transition-colors">Chapter Test</a></li><li><a href="#" class="hover:text-[#06b6d4] transition-colors">WeTest</a></li><li><a href="#" class="hover:text-[#06b6d4] transition-colors">刷进度</a></li><li><a href="#" class="hover:text-[#06b6d4] transition-colors">刷时长</a></li></ul></div>
-      <div><h4 class="text-sm font-semibold uppercase tracking-[0.04em] mb-4">资源</h4><ul class="flex flex-col gap-3 text-sm text-[#b8d4dc]"><li><a href="#" class="hover:text-[#06b6d4] transition-colors">使用文档</a></li><li><a href="#" class="hover:text-[#06b6d4] transition-colors">更新日志</a></li><li><a href="#" class="hover:text-[#06b6d4] transition-colors">常见问题</a></li></ul></div>
-      <div><h4 class="text-sm font-semibold uppercase tracking-[0.04em] mb-4">关于</h4><ul class="flex flex-col gap-3 text-sm text-[#b8d4dc]"><li><a href="#" class="hover:text-[#06b6d4] transition-colors">GitHub</a></li><li><a href="#" class="hover:text-[#06b6d4] transition-colors">反馈建议</a></li></ul></div>
-    </div>
-    <div class="flex flex-col md:flex-row justify-between items-center gap-3 pt-6 border-t border-[#122a32] text-sm text-[#709098]">
-      <span>© 2026 WeLearn 自动化脚本. MIT License.</span>
-      <span>Powered by DeepSeek AI</span>
+<footer class="border-t border-[#1c2638] py-8 relative z-10">
+  <div class="max-w-[1320px] mx-auto px-6 md:px-9 flex justify-between items-center flex-wrap gap-4">
+    <div class="text-xs text-[#8492a6]">© 2026 WeLearn 自动化脚本 · 仅供学习交流使用</div>
+    <div class="flex gap-6">
+      <a href="#" class="text-xs text-[#8492a6] hover:text-[#cbd5e1] transition-colors">使用协议</a>
+      <a href="#" class="text-xs text-[#8492a6] hover:text-[#cbd5e1] transition-colors">隐私政策</a>
+      <a href="#" class="text-xs text-[#8492a6] hover:text-[#cbd5e1] transition-colors">联系我们</a>
     </div>
   </div>
 </footer>
 
-<!-- ================================================================ -->
-<!-- SCRIPTS: Lenis + 高密粒子 + Three.js + GSAP 分层飞出              -->
-<!-- ================================================================ -->
+<!-- ==================== SCRIPTS ==================== -->
 <script>
 // ── LENIS ──
-const lenis = new Lenis({duration:1.2,easing:t=>Math.min(1,1.001-Math.pow(2,-10*t)),smoothWheel:true});
+const lenis=new Lenis({duration:1.2,easing:t=>Math.min(1,1.001-Math.pow(2,-10*t)),smoothWheel:true});
 function raf(t){lenis.raf(t);requestAnimationFrame(raf)}requestAnimationFrame(raf);
 lenis.on('scroll',ScrollTrigger.update);gsap.ticker.add(t=>lenis.raf(t*1000));gsap.ticker.lagSmoothing(0);
 
-// ── 高密度荧光粒子 (150个, 全页固定, 远离鼠标) ──
+// ── 150 荧光粒子，全页固定，远离鼠标 ──
 (function(){
   const c=document.getElementById('particle-canvas'),ctx=c.getContext('2d');
   let ps=[],mx=-9999,my=-9999,aid;
-  function rs(){c.width=window.innerWidth;c.height=window.innerHeight}window.addEventListener('resize',rs);rs();
-  const COLS=['#06b6d4','#22d3ee','#2dd4bf','#14b8a6','#67e8f9','#5eead4'];
+  function rs(){c.width=innerWidth;c.height=innerHeight}addEventListener('resize',rs);rs();
+  const COLS=['#38bdf8','#22d3ee','#2dd4bf','#7dd3fc','#67e8f9','#5eead4'];
   class P{
     constructor(){
       this.x=Math.random()*c.width;this.y=Math.random()*c.height;
-      this.vx=(Math.random()-.5)*.4;this.vy=(Math.random()-.5)*.4;
-      this.s=Math.random()*2.5+1.2;this.cl=COLS[Math.floor(Math.random()*COLS.length)];
-      this.a=Math.random()*.5+.3;this.p=Math.random()*Math.PI*2;this.ps=.008+Math.random()*.025;
+      this.vx=(Math.random()-.5)*.35;this.vy=(Math.random()-.5)*.35;
+      this.s=Math.random()*2.3+1;this.cl=COLS[Math.floor(Math.random()*COLS.length)];
+      this.a=Math.random()*.45+.25;this.p=Math.random()*Math.PI*2;this.ps=.006+.025*Math.random();
     }
     u(){
       this.x+=this.vx;this.y+=this.vy;this.p+=this.ps;
       if(this.x<-20)this.x=c.width+20;if(this.x>c.width+20)this.x=-20;
       if(this.y<-20)this.y=c.height+20;if(this.y>c.height+20)this.y=-20;
       const dx=this.x-mx,dy=this.y-my,dist=Math.sqrt(dx*dx+dy*dy);
-      if(dist<180&&dist>0){const f=(180-dist)/180*2.5;this.vx+=(dx/dist)*f*.03;this.vy+=(dy/dist)*f*.03;this.vx*=.97;this.vy*=.97}
-      const spd=Math.sqrt(this.vx*this.vx+this.vy*this.vy);if(spd>.9){this.vx=(this.vx/spd)*.9;this.vy=(this.vy/spd)*.9}
+      if(dist<180&&dist>0){const f=(180-dist)/180*2.8;this.vx+=dx/dist*f*.035;this.vy+=dy/dist*f*.035;this.vx*=.97;this.vy*=.97}
+      const spd=Math.sqrt(this.vx*this.vx+this.vy*this.vy);if(spd>.85){this.vx=this.vx/spd*.85;this.vy=this.vy/spd*.85}
     }
     d(){
       const aa=this.a*(.55+.45*Math.sin(this.p));
       ctx.beginPath();ctx.arc(this.x,this.y,this.s,0,Math.PI*2);ctx.fillStyle=this.cl;ctx.globalAlpha=aa;ctx.fill();
       const g=ctx.createRadialGradient(this.x,this.y,0,this.x,this.y,this.s*5);
       g.addColorStop(0,this.cl);g.addColorStop(1,'transparent');
-      ctx.beginPath();ctx.arc(this.x,this.y,this.s*5,0,Math.PI*2);ctx.fillStyle=g;ctx.globalAlpha=aa*.12;ctx.fill();
+      ctx.beginPath();ctx.arc(this.x,this.y,this.s*5,0,Math.PI*2);ctx.fillStyle=g;ctx.globalAlpha=aa*.1;ctx.fill();
     }
   }
   for(let i=0;i<150;i++)ps.push(new P());
   function dc(){
     for(let i=0;i<ps.length;i++)for(let j=i+1;j<ps.length;j++){
       const dx=ps[i].x-ps[j].x,dy=ps[i].y-ps[j].y,dist=Math.sqrt(dx*dx+dy*dy);
-      if(dist<140){ctx.beginPath();ctx.moveTo(ps[i].x,ps[i].y);ctx.lineTo(ps[j].x,ps[j].y);ctx.strokeStyle=ps[i].cl;ctx.globalAlpha=(1-dist/140)*.1;ctx.lineWidth=.6;ctx.stroke()}
+      if(dist<130){ctx.beginPath();ctx.moveTo(ps[i].x,ps[i].y);ctx.lineTo(ps[j].x,ps[j].y);ctx.strokeStyle=ps[i].cl;ctx.globalAlpha=(1-dist/130)*.08;ctx.lineWidth=.5;ctx.stroke()}
     }
   }
   function anim(){ctx.clearRect(0,0,c.width,c.height);ps.forEach(p=>{p.u();p.d()});dc();ctx.globalAlpha=1;aid=requestAnimationFrame(anim)}anim();
-  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
-  document.addEventListener('mouseleave',()=>{mx=-9999;my=-9999});
-  window.addEventListener('beforeunload',()=>{if(aid)cancelAnimationFrame(aid)});
+  addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
+  addEventListener('mouseleave',()=>{mx=-9999;my=-9999});
+  addEventListener('beforeunload',()=>{if(aid)cancelAnimationFrame(aid)});
 })();
 
 // ── THREE.JS ──
@@ -432,92 +392,96 @@ import('three').then(T=>{
   const THREE=T,canvas=document.getElementById('three-canvas'),sec=canvas.parentElement;
   const r=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true});r.setPixelRatio(Math.min(devicePixelRatio,2));
   const scene=new THREE.Scene(),cam=new THREE.PerspectiveCamera(45,1,.1,100);cam.position.z=10;
-  const knot=new THREE.Mesh(new THREE.TorusKnotGeometry(1.3,.35,200,32),new THREE.MeshBasicMaterial({color:0x06b6d4,wireframe:true,transparent:true,opacity:.45}));scene.add(knot);
+  const knot=new THREE.Mesh(new THREE.TorusKnotGeometry(1.3,.35,200,32),new THREE.MeshBasicMaterial({color:0x38bdf8,wireframe:true,transparent:true,opacity:.4}));scene.add(knot);
   const pg=new THREE.BufferGeometry(),cnt=600,pos=new Float32Array(cnt*3);
   for(let i=0;i<cnt;i++){const th=Math.random()*Math.PI*2,ph=Math.random()*Math.PI,rd=3.5+Math.random()*2;pos[i*3]=rd*Math.sin(ph)*Math.cos(th);pos[i*3+1]=rd*Math.sin(ph)*Math.sin(th);pos[i*3+2]=rd*Math.cos(ph)}
-  pg.setAttribute('position',new THREE.BufferAttribute(pos,3));scene.add(new THREE.Points(pg,new THREE.PointsMaterial({color:0x22d3ee,size:.045,transparent:true,opacity:.65,blending:THREE.AdditiveBlending,depthWrite:false})));
-  function resize(){const rect=sec.getBoundingClientRect();r.setSize(rect.width,rect.height);cam.aspect=rect.width/rect.height;cam.updateProjectionMatrix()}window.addEventListener('resize',resize);resize();
+  pg.setAttribute('position',new THREE.BufferAttribute(pos,3));scene.add(new THREE.Points(pg,new THREE.PointsMaterial({color:0x22d3ee,size:.04,transparent:true,opacity:.6,blending:THREE.AdditiveBlending,depthWrite:false})));
+  function resize(){const rect=sec.getBoundingClientRect();r.setSize(rect.width,rect.height);cam.aspect=rect.width/rect.height;cam.updateProjectionMatrix()}addEventListener('resize',resize);resize();
   function a3d(t){knot.rotation.x=t*.00025;knot.rotation.y=t*.0004;knot.rotation.z=t*.00015;r.render(scene,cam);requestAnimationFrame(a3d)}requestAnimationFrame(a3d);
+});
+
+// ── FAQ toggle animation ──
+document.querySelectorAll('details.faq-item').forEach(d=>{
+  d.addEventListener('toggle',()=>{if(d.open)setTimeout(()=>d.scrollIntoView({behavior:'smooth',block:'nearest'}),100)});
 });
 
 // ── GSAP ──
 gsap.registerPlugin(ScrollTrigger);
 
-// Nav
-gsap.to('#nav-brand',{opacity:1,duration:.5,delay:.3});
-gsap.to('#nav-links',{opacity:1,duration:.5,delay:.4});
+gsap.to('#nav-brand',{opacity:1,duration:.4,delay:.2});
+gsap.to('#nav-links',{opacity:1,duration:.4,delay:.3});
 
-// Hero — 分层入场：badge先→标题爆发→副标题→按钮
+// Hero
 const ht=gsap.timeline({defaults:{ease:'power3.out'}});
-ht.to('#hero-badge',{opacity:1,y:0,duration:.5},.1)
-  .from('#hero-title',{opacity:0,scale:.7,y:120,duration:1.6,ease:'power4.out'},.15)
-  .from('#hero-sub',{opacity:0,y:60,duration:1,delay:.3},.5)
-  .from('#hero-cta',{opacity:0,y:40,duration:.7,delay:.5},.8)
-  .to('#scroll-hint',{opacity:.7,duration:.8},1.4);
+ht.to('#hero-badge',{opacity:1,y:0,duration:.5},.05)
+  .from('#hero-title',{opacity:0,scale:.75,y:120,duration:1.5,ease:'power4.out'},.1)
+  .from('#hero-sub',{opacity:0,y:50,duration:.9},.45)
+  .from('#hero-cta',{opacity:0,y:35,duration:.7},.75)
+  .to('#hero-stats',{opacity:1,y:0,duration:.8},1)
+  .to('#scroll-hint',{opacity:.7,duration:.6},1.3);
 
-// 光晕视差
-gsap.to('[data-parallax="0.3"]',{y:'-15%',ease:'none',scrollTrigger:{trigger:'section',start:'top top',end:'bottom top',scrub:true}});
-gsap.to('[data-parallax="0.6"]',{y:'-30%',ease:'none',scrollTrigger:{trigger:'section',start:'top top',end:'bottom top',scrub:true}});
+gsap.to('[data-parallax]',{y:'-20%',ease:'none',scrollTrigger:{trigger:'section',start:'top top',end:'bottom top',scrub:true}});
 
-// 功能标题
-const stF=ScrollTrigger.create({trigger:'.feat-head',start:'top 82%'});
-gsap.fromTo('.feat-head',{opacity:0,y:30},{opacity:1,y:0,duration:.7,scrollTrigger:{trigger:'.feat-head',start:'top 85%'}});
-gsap.fromTo('.feat-title',{opacity:0,y:50},{opacity:1,y:0,duration:.9,delay:.2,scrollTrigger:{trigger:'.feat-title',start:'top 85%'}});
-gsap.fromTo('.feat-desc',{opacity:0,y:30},{opacity:1,y:0,duration:.7,delay:.35,scrollTrigger:{trigger:'.feat-desc',start:'top 85%'}});
+// Demo
+gsap.fromTo('.demo-win',{opacity:0,y:80},{opacity:1,y:0,duration:1.2,ease:'power3.out',scrollTrigger:{trigger:'.demo-win',start:'top 82%'}});
 
-// 功能卡片 — 四种不同飞出方向
+// Features
+gsap.fromTo('.feat-label',{opacity:0,y:25},{opacity:1,y:0,duration:.7,scrollTrigger:{trigger:'.feat-label',start:'top 85%'}});
+gsap.fromTo('.feat-title',{opacity:0,y:40},{opacity:1,y:0,duration:.9,delay:.15,scrollTrigger:{trigger:'.feat-title',start:'top 85%'}});
+gsap.fromTo('.feat-desc',{opacity:0,y:25},{opacity:1,y:0,duration:.7,delay:.3,scrollTrigger:{trigger:'.feat-desc',start:'top 85%'}});
 document.querySelectorAll('.feat-card').forEach(el=>{
-  const dir=el.dataset.fly;
-  let from={};
-  if(dir==='left')from={opacity:0,x:-120,rotateY:15};
-  else if(dir==='right')from={opacity:0,x:120,rotateY:-15};
-  else if(dir==='bottom')from={opacity:0,y:120,rotateX:10};
-  else from={opacity:0,scale:.6,y:80};
-  gsap.fromTo(el,from,{opacity:1,x:0,y:0,scale:1,rotateY:0,rotateX:0,duration:1,ease:'power4.out',scrollTrigger:{trigger:el,start:'top 85%'}});
+  const d=el.dataset.fly;let f={};
+  if(d==='left')f={opacity:0,x:-100,rotateY:12};
+  else if(d==='right')f={opacity:0,x:100,rotateY:-12};
+  else if(d==='bottom')f={opacity:0,y:100,rotateX:8};
+  else f={opacity:0,scale:.55,y:60};
+  gsap.fromTo(el,f,{opacity:1,x:0,y:0,scale:1,rotateY:0,rotateX:0,duration:1,ease:'power4.out',scrollTrigger:{trigger:el,start:'top 85%'}});
 });
 
-// 使用流程 — 交替飞出
-gsap.fromTo('.how-head',{opacity:0,y:30},{opacity:1,y:0,duration:.7,scrollTrigger:{trigger:'.how-head',start:'top 85%'}});
-gsap.fromTo('.how-title',{opacity:0,y:50},{opacity:1,y:0,duration:.9,delay:.2,scrollTrigger:{trigger:'.how-title',start:'top 85%'}});
-gsap.fromTo('.how-desc',{opacity:0,y:30},{opacity:1,y:0,duration:.7,delay:.35,scrollTrigger:{trigger:'.how-desc',start:'top 85%'}});
-gsap.fromTo('#step-line',{opacity:0,scaleY:0},{opacity:.3,scaleY:1,duration:1.5,transformOrigin:'top center',scrollTrigger:{trigger:'#step-line',start:'top 80%'}});
-document.querySelectorAll('.how-step').forEach((el,i)=>{
-  const dir=el.dataset.fly;
-  const from=dir==='left'?{opacity:0,x:-100}:{opacity:0,x:100};
-  gsap.fromTo(el,from,{opacity:1,x:0,duration:1,delay:i*.25,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 82%'}});
+// Tech
+gsap.fromTo('.tech-label',{opacity:0,y:25},{opacity:1,y:0,duration:.7,scrollTrigger:{trigger:'.tech-label',start:'top 85%'}});
+gsap.fromTo('.tech-title',{opacity:0,y:40},{opacity:1,y:0,duration:.9,delay:.15,scrollTrigger:{trigger:'.tech-title',start:'top 85%'}});
+document.querySelectorAll('.tech-card').forEach(el=>{
+  const d=el.dataset.fly;let f={};
+  if(d==='left')f={opacity:0,x:-80};
+  else if(d==='right')f={opacity:0,x:80};
+  else f={opacity:0,y:80};
+  gsap.fromTo(el,f,{opacity:1,x:0,y:0,duration:.9,delay:.2,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 88%'}});
 });
 
-// Three.js 区
-gsap.fromTo('.t3-label',{opacity:0,y:40},{opacity:1,y:0,duration:.8,scrollTrigger:{trigger:'.t3-label',start:'top 85%'}});
-gsap.fromTo('.t3-title',{opacity:0,y:70,scale:.9},{opacity:1,y:0,scale:1,duration:1.2,delay:.2,scrollTrigger:{trigger:'.t3-title',start:'top 85%'}});
-gsap.fromTo('.t3-desc',{opacity:0,y:30},{opacity:1,y:0,duration:.8,delay:.4,scrollTrigger:{trigger:'.t3-desc',start:'top 90%'}});
+// Three.js
+gsap.fromTo('.t3-label',{opacity:0,y:30},{opacity:1,y:0,duration:.7,scrollTrigger:{trigger:'.t3-label',start:'top 88%'}});
+gsap.fromTo('.t3-title',{opacity:0,y:60,scale:.9},{opacity:1,y:0,scale:1,duration:1.1,delay:.15,scrollTrigger:{trigger:'.t3-title',start:'top 88%'}});
+gsap.fromTo('.t3-desc',{opacity:0,y:25},{opacity:1,y:0,duration:.8,delay:.3,scrollTrigger:{trigger:'.t3-desc',start:'top 90%'}});
 
-// 技术亮点 — 交替方向
-gsap.fromTo('.tech-head',{opacity:0,y:30},{opacity:1,y:0,duration:.7,scrollTrigger:{trigger:'.tech-head',start:'top 85%'}});
-gsap.fromTo('.tech-title',{opacity:0,y:50},{opacity:1,y:0,duration:.9,delay:.2,scrollTrigger:{trigger:'.tech-title',start:'top 85%'}});
-document.querySelectorAll('.tech-item').forEach((el,i)=>{
-  const dir=el.dataset.fly;
-  let from={};
-  if(dir==='left')from={opacity:0,x:-80};
-  else if(dir==='right')from={opacity:0,x:80};
-  else if(dir==='bottom')from={opacity:0,y:80};
-  else from={opacity:0,scale:.5};
-  gsap.fromTo(el,from,{opacity:1,x:0,y:0,scale:1,duration:.9,delay:i*.18,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 85%'}});
+// Flow
+gsap.fromTo('.flow-label',{opacity:0,y:25},{opacity:1,y:0,duration:.7,scrollTrigger:{trigger:'.flow-label',start:'top 85%'}});
+gsap.fromTo('.flow-title',{opacity:0,y:40},{opacity:1,y:0,duration:.9,delay:.15,scrollTrigger:{trigger:'.flow-title',start:'top 85%'}});
+document.querySelectorAll('.flow-step').forEach((el,i)=>{
+  const d=el.dataset.fly;let f={};
+  if(d==='left')f={opacity:0,x:-60};
+  else if(d==='right')f={opacity:0,x:60};
+  else f={opacity:0,y:60};
+  gsap.fromTo(el,f,{opacity:1,x:0,y:0,duration:.8,delay:i*.18,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 88%'}});
 });
 
-// Stats — 数字滚动计数 + 弹出
+// Stats
 document.querySelectorAll('.stat-num').forEach(el=>{
   const t=parseInt(el.dataset.target);
-  gsap.fromTo(el,{textContent:0},{textContent:t,duration:3,ease:'power2.out',snap:{textContent:1},scrollTrigger:{trigger:el,start:'top 85%'},onUpdate(){el.textContent=Math.round(this.targets()[0].textContent)}});
-  gsap.fromTo(el,{opacity:0,scale:.3},{opacity:1,scale:1,duration:.6,ease:'back.out(2)',scrollTrigger:{trigger:el,start:'top 85%'}});
+  gsap.fromTo(el,{textContent:0},{textContent:t,duration:2.8,ease:'power2.out',snap:{textContent:1},scrollTrigger:{trigger:el,start:'top 88%'},onUpdate(){el.textContent=Math.round(this.targets()[0].textContent)}});
+  gsap.fromTo(el,{opacity:0,scale:.2},{opacity:1,scale:1,duration:.5,ease:'back.out(2)',scrollTrigger:{trigger:el,start:'top 88%'}});
 });
 
-// CTA — 弹性弹出
-gsap.fromTo('.cta-label',{opacity:0,y:30},{opacity:1,y:0,duration:.7,scrollTrigger:{trigger:'.cta-label',start:'top 85%'}});
-gsap.fromTo('.cta-title',{opacity:0,y:80,scale:.85},{opacity:1,y:0,scale:1,duration:1.2,delay:.2,ease:'power4.out',scrollTrigger:{trigger:'.cta-title',start:'top 85%'}});
-gsap.fromTo('.cta-desc',{opacity:0,y:40},{opacity:1,y:0,duration:.8,delay:.4,scrollTrigger:{trigger:'.cta-desc',start:'top 90%'}});
-gsap.fromTo('.cta-img',{opacity:0,y:50},{opacity:1,y:0,duration:.9,delay:.55,scrollTrigger:{trigger:'.cta-img',start:'top 90%'}});
-gsap.fromTo('.cta-btns',{opacity:0,scale:.7},{opacity:1,scale:1,duration:.8,delay:.75,ease:'back.out(2.5)',scrollTrigger:{trigger:'.cta-btns',start:'top 90%'}});
+// FAQ
+gsap.fromTo('.faq-label',{opacity:0,y:25},{opacity:1,y:0,duration:.7,scrollTrigger:{trigger:'.faq-label',start:'top 85%'}});
+gsap.fromTo('.faq-title',{opacity:0,y:40},{opacity:1,y:0,duration:.9,delay:.15,scrollTrigger:{trigger:'.faq-title',start:'top 85%'}});
+document.querySelectorAll('.faq-item').forEach((el,i)=>{
+  const d=el.dataset.fly;let f=d==='left'?{opacity:0,x:-80}:{opacity:0,x:80};
+  gsap.fromTo(el,f,{opacity:1,x:0,duration:.8,delay:i*.15,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 90%'}});
+});
+
+// CTA
+gsap.fromTo('.cta-banner',{opacity:0,y:70,scale:.9},{opacity:1,y:0,scale:1,duration:1.1,ease:'power4.out',scrollTrigger:{trigger:'.cta-banner',start:'top 85%'}});
 </script>
 </body>
 </html>
